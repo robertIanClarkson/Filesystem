@@ -4,15 +4,17 @@
 #include <string.h>
 #include <math.h>
 
-#include "fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
-#include "tokenize.c" /* (tokenize) (print) */
+#include "structs.h"
+#include "./low/fsLow.h" /* (startPartitionSystem) (closePartitionSystem) (LBAwrite) (LBAread) */
+#include "./tokenize/tokenize.h" /* (tokenize) (print) */
 
-struct filesystem_volume{
-    char* filename;
-    uint64_t volumeSize;
-	uint64_t blockSize;
-    int retVal;
-};
+#include "./functions/cp/copyFile.h" /* (copyFile) */
+#include "./functions/ld/listDir.h" /* (listDir) */
+#include "./functions/mkdir/createDir.h" /* (createDir) */
+#include "./functions/mv/moveFile.h" /* (moveFile) */
+#include "./functions/rm/removeFile.h" /* (removeFile) */
+#include "./functions/set/setMetaData.h" /* (setMetaData) */
+#include "./functions/touch/createFile.h" /* (createFile) */
 
 int main (int main_argc, char *main_argv[]) {
     struct filesystem_volume volume;
@@ -22,6 +24,13 @@ int main (int main_argc, char *main_argv[]) {
 		volume.filename      = main_argv[1];
 		volume.volumeSize    = atoll (main_argv[2]); // must be greater than 500,000 and a power of 2
 		volume.blockSize     = atoll (main_argv[3]); // must be greater than 512 and a power of 2
+        volume.blockCount    = (volume.volumeSize / volume.blockSize); // number of LBAs
+        
+        /* Initialize the map to 0 (empty) */
+        volume.map           = malloc(sizeof(int) * volume.blockCount);
+        for(int i = 0; i < volume.blockCount; i++) {
+            volume.map[i] = 0;
+        }
 	} else {
         printf("Need 3 args (filename volumeSize blcokSize\n");
         return EXIT_FAILURE;
@@ -52,24 +61,24 @@ int main (int main_argc, char *main_argv[]) {
     printf("\nNOTE: type \"exit\" to exit this prompt\n");
     printf("NOTE: type \"help\" to show commands\n\n");
     do {
-        printf("$ "); // prompt
+        printf("Filesystem_Prompt$ "); // prompt
         fgets(line, LINE_LENGTH, stdin);
         tokenize(line, &command);
         if(command.argc == 0) continue; 
         if(strcmp(command.opt, "ld") == 0) {
-            // success = listDir(volume, command);
+            success = listDir(volume, command);
         } else if(strcmp(command.opt, "mkdir") == 0) {
-            // success = createDir(volume, command);
+            success = createDir(volume, command);
         } else if(strcmp(command.opt, "touch") == 0) {
-            // success = createFile(volume, command);
+            success = createFile(volume, command);
         } else if(strcmp(command.opt, "rm") == 0) {
-            // success = removeFile(volume, command);
+            success = removeFile(volume, command);
         } else if(strcmp(command.opt, "cp") == 0) {
-            // success = copyFile(volume, command);
+            success = copyFile(volume, command);
         } else if(strcmp(command.opt, "mv") == 0) {
-            // success = moveFile(volume, command);
+            success = moveFile(volume, command);
         } else if(strcmp(command.opt, "set") == 0) {
-            // success = setMetaData(volume, command);
+            success = setMetaData(volume, command);
         } else if(strcmp(command.opt, "special1") == 0) {
             // success = special1(volume, command);
         } else if(strcmp(command.opt, "special2") == 0) {
@@ -94,6 +103,8 @@ int main (int main_argc, char *main_argv[]) {
     } while(strcmp(command.opt, "exit") != 0);
 
     /* Close Partition */
+    printf("Closing Partition\n");
     closePartitionSystem();
+    printf("Closed  Partition\n");
     return EXIT_SUCCESS;
 }
