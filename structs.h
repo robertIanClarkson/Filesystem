@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #define MAX_ARGS 8
 #define ARG_LENGTH 32 // CHAR
