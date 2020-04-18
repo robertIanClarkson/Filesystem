@@ -1,3 +1,5 @@
+# Please View this page by clicking 'RAW' button! :D
+
 ## Easiest
 ### $ make bang!
 ### $ make superclean! 
