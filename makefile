@@ -10,7 +10,7 @@ cleanResults:
 	> hexdump_results.txt
 
 ourDriver:
-	gcc fsdriver3.c low/fsLow.c tokenize/tokenize.c functions/cp/copyFile.c functions/ld/listDir.c functions/mkdir/createDir.c functions/mv/moveFile.c functions/rm/removeFile.c functions/set/setMetaData.c functions/touch/createFile.c -o main -lm
+	gcc fsdriver3.c low/fsLow.c tokenize/tokenize.c structs.c functions/cp/copyFile.c functions/ld/listDir.c functions/mkdir/createDir.c functions/mv/moveFile.c functions/rm/removeFile.c functions/set/setMetaData.c functions/touch/createFile.c -o main -lm
 
 lowDriver:
 	gcc fsLowDriver.c low/fsLow.c -o main -lm
@@ -29,5 +29,13 @@ runLow:
 runHexdump:
 	make hexdump
 	(./hex volume) >> hexdump_results.txt 
+
+bang!:
+	make run
+	make runHexdump
+
+superclean!:
+	make clean
+	make cleanHex
 
 
