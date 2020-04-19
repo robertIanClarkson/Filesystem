@@ -155,3 +155,22 @@ int getName(char* buffer, char* name) {
 int getType(char* buffer, char* type) {
     return getLine(buffer, type, 16);
 }
+
+/* returns 1 if it is the LBA, 0 if it isnt */
+int LBAis(struct filesystem_volume volume, int index, char* keyName, char* keyType) {
+    char* buffer = malloc(volume.blockSize);
+    char* name = malloc(16);
+    char* type = malloc(16);
+    int retVal = LBAread(buffer, 1, index); // need to add check here
+    if((getName(buffer, name)) != 1) return 0;
+    if((getType(buffer, type)) != 1) return 0;
+    if((strcmp(type, keyType) == 0) && (strcmp(name, keyName) == 0)) {
+        retVal = 1;
+    } else {
+        retVal = 0;
+    }
+    free(type);
+    free(name);
+    free(buffer);
+    return retVal;
+}

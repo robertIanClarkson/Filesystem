@@ -53,4 +53,7 @@ int getName(char* buffer, char* name);
 /* return 0 if line empty, 1 if line not empty */
 int getType(char* buffer, char* type);
 
+/* returns 1 if it is the LBA, 0 if it isnt */
+int LBAis(struct filesystem_volume volume, int index, char* name, char* type);
+
 #endif /* stucts_h */
