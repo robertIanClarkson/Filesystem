@@ -10,7 +10,7 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     // Get args 
     char* name = command.args[1];
     //int filesize = atoll (command.args[2]); // size in LBAs
-    char* parent = command.args[2]; // tje parent is the directory folder
+    char* parent = command.args[2]; // the parent is the directory folder
 
     printf("Creating filename: %s in directory: %s\n", name, parent);
 
