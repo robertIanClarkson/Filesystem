@@ -44,4 +44,13 @@ int connectMetaData(int index, char* buffer);
 /* line 4 to 32 of LBA */
 int addChild(int child, int parent, struct filesystem_volume volume);
 
+/* return 0 if line empty, 1 if line not empty */
+int getLine(char* buffer, char* line, int startIndex);
+
+/* return 0 if line empty, 1 if line not empty */
+int getName(char* buffer, char* name);
+
+/* return 0 if line empty, 1 if line not empty */
+int getType(char* buffer, char* type);
+
 #endif /* stucts_h */

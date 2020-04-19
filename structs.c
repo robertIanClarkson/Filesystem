@@ -135,5 +135,23 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
     return 1;
 }
 
+// return 0 if line empty, 1 if line not empty
+int getLine(char* buffer, char* line, int startIndex) {
+    int i;
+    if(buffer[startIndex] == '-') return 0;
+    for (i = startIndex; i < (startIndex + 16); i++) {
+        if(buffer[i] == '-') break;
+        line[i - startIndex] = buffer[i];
+    }
+    return 1;
+}
 
+// return 0 if line empty, 1 if line not empty
+int getName(char* buffer, char* name) {
+    return getLine(buffer, name, 0);
+}
 
+// return 0 if line empty, 1 if line not empty
+int getType(char* buffer, char* type) {
+    return getLine(buffer, type, 16);
+}
