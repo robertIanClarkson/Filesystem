@@ -1,27 +1,20 @@
 #include "createFile.h"
 
 int createFile(struct filesystem_volume volume, struct arguments command) {
-     /* Checking argc */
+    // Checking argc 
     if(command.argc != 3) {
         printf("***Not Enough Args***\n");
         return 0; // check
     }
 
-    /* Get args */
+    // Get args 
     char* name = command.args[1];
-    int filesize = atoll (command.args[2]); // size in LBAs
+    //int filesize = atoll (command.args[2]); // size in LBAs
+    char* parent = command.args[2]; // tje parent is the directory folder
 
-    printf("Creating filename: %s\n", name);
+    printf("Creating filename: %s in directory: %s\n", name, parent);
 
-    // Check to see if existing file has the same name
-    filesystem_volume *temp = malloc(sizeof(filesystem_volume));
-
-    if (strcmp(temp->name, name) == 0) {
-        printf("File already exists\n");
-        return -1;
-    }
-
-    /* Find the first LBA that is empty */
+    // Find the first LBA that is empty 
     printf("- Looking for Index LBA\n");
     int i;
     for(i = 0; i < volume.blockCount; i++) 
@@ -29,11 +22,11 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
 
     printf("  - Empty LBA at: %d\n", i);
 
-    /* mark LBA as used */
+    // mark LBA as used 
     printf("  - Marking LBA as used\n");
     volume.map[i] = 1;
 
-    /* Find another LBA for that is empty for metadata */
+    // Find another LBA for that is empty for metadata 
     printf("- Looking for MetaData LBA\n");
     int j;
     for(j = 0; j < volume.blockCount; j++) 
@@ -41,11 +34,20 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
 
     printf("  - Empty LBA at: %d\n", j);
 
-    /* mark LBA as used */
+    // mark LBA as used 
     printf("  - Marking LBA as used\n");
     volume.map[j] = 1;
 
-     /* Create Index LBA */
+    // Get parent LBA position
+    printf("- Looking for parent folder\n");
+    int parentIndex = getIndex(parent, volume);
+    if (parentIndex < 0) {
+        printf("***PARENT FOLDER DNE***\n");
+        return 0;
+    } 
+    printf("  - Found parent folder\n");
+
+    // Create Index LBA 
     printf("- Creating Buffer\n");
     char* buffer = malloc(volume.blockSize);
     initializeLBA(buffer, '#', volume.blockSize);
@@ -66,21 +68,11 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     if(addType("metadata", metaBuffer) != 1) return 0; // check
     LBAwrite(metaBuffer, 1, j);
     free(metaBuffer);
-    /*// Create a buffer for of 'f' 
-    char* buffer = malloc(volume.blockSize);
-    printf("filesize: %d\n", filesize);
-    int result = addName(name, buffer);
-    if (result != 1) {
-        printf("Fi");
-        return 0;
-    }
-    for (int i = 0; i < volume.blockSize; i++) 
-        buffer[i] = 'f';
-
-    // Write 'f' into 'filesize' number of blocks 
-    for (int j = 0; j < filesize; j++) {
-        uint64_t result = LBAwrite( buffer, 1,j);
-    } */
+    
+    // update parent LBA with child LBA
+    printf("- Updating parent folder\n");
+    if (addChild(i, parentIndex, volume) != 1) return 0;
+    
     printf("- COMPLETE\n");
     return 1;
 }
