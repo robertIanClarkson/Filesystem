@@ -44,6 +44,25 @@ int getIndex(char* key, struct filesystem_volume volume) {
     free(name);
     return -1;
 }
+///////////////////////// Possible idea for deleting files //////////////////////////////
+void deleteName(char* buffer) {
+    for(int i=0; i<16;i++) 
+        buffer[i] = ".";
+}
+
+void deleteType(char* buffer) {
+    for(int i=16; i < 16; i++) 
+        buffer[i] = ".";
+}
+
+void disconnectMetaData(char* buffer) {
+    int lineStart = (16*2);
+    for(int i = lineStart; i < (lineStart + 16); i++) {
+        buffer[i] = str[i - lineStart];
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 // 1
 int addName(char* name, char* buffer) {

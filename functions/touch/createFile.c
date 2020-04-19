@@ -63,7 +63,7 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
 
     /* create metadata block */
     char* metaBuffer = malloc(volume.blockSize);
-    initializeLBA(metaBuffer, '*', volume.blockSize);
+    initializeLBA(metaBuffer, '$', volume.blockSize);
     if(addName(name, metaBuffer) != 1) return 0; // check
     if(addType("metadata", metaBuffer) != 1) return 0; // check
     LBAwrite(metaBuffer, 1, j);
