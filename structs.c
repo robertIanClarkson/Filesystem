@@ -198,19 +198,3 @@ int LBAis(struct filesystem_volume volume, int index, char* keyName, char* keyTy
     free(buffer);
     return retVal;
 }
-
-// helper function for removeFile function 
-int removeChild(int parent, struct filesystem_volume volume) {
-    char* buffer = malloc(volume.blockSize);
-    int retVal = LBAread(buffer, 1, parent);
-
-    int lineStart = (16*3);
-    int i;
-    for(i=lineStart; i<volume.blockSize; i=i+16) 
-        buffer[i] = '-';
-
-    /* write updated buffer */
-    retVal = LBAwrite(buffer, 1, parent);
-
-    return 1;
-}
