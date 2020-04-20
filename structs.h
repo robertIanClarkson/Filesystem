@@ -56,4 +56,6 @@ int getType(char* buffer, char* type);
 /* returns 1 if it is the LBA, 0 if it isnt */
 int LBAis(struct filesystem_volume volume, int index, char* name, char* type);
 
+int removeChild(int parent, struct filesystem_volume volume);
+
 #endif /* stucts_h */

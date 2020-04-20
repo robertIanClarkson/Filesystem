@@ -50,7 +50,7 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     // Create Index LBA 
     printf("- Creating Buffer\n");
     char* buffer = malloc(volume.blockSize);
-    initializeLBA(buffer, '#', volume.blockSize);
+    initializeLBA(buffer, '-', volume.blockSize);
     printf("  - Adding Name: %s\n", name);
     if(addName(name, buffer) != 1) return 0; // check
     printf("  - Adding Type: file\n");
@@ -63,7 +63,7 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
 
     /* create metadata block */
     char* metaBuffer = malloc(volume.blockSize);
-    initializeLBA(metaBuffer, '$', volume.blockSize);
+    initializeLBA(metaBuffer, '*', volume.blockSize);
     if(addName(name, metaBuffer) != 1) return 0; // check
     if(addType("metadata", metaBuffer) != 1) return 0; // check
     LBAwrite(metaBuffer, 1, j);
