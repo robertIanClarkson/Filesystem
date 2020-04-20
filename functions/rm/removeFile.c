@@ -51,3 +51,34 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     printf("- COMPLETE\n");
     return 1;
 }
+
+/* 
+    char* buffer = malloc(volume.blockSize);
+    char* cleanBuffer = malloc(volume.blockSize);
+    intitializeLBA(cleanBuffer, '.', volume.blockSize);
+    char* indexOfFile = malloc(16);
+    char* indexOfBody = malloc(16);
+    for(int i = 48; i < volume.blocksize; i = i + 16) { // each line of parent folder
+        if(getLine(buffer, indexOfFile, i) == 0) continue;
+        if(LBAis(volume, atoi(indexOfFile), name, "file") == 1) { // is the index of the file we want to delete    
+            LBAread(buffer, 1, atoi(indexOfFile));
+            for(int j = 48; j < volume.blocksize; j = j + 16) { // each line of file we are removing
+                if(getLine(buffer, indexOfBody, i) == 0) continue; // skip all empty lines
+                LBAwrite(cleanBuffer, 1, atoi(indexOfBody)); // re-initializing the body LBA
+                volume.map[atoi(indexOfBody)] = 0; // set body LBA to free
+            }
+            LBAwrite(cleanBuffer, 1, atoi(indexOfFile)); // re-initializing the file LBA
+            volume.map[atoi(indexOfFile)] = 0; // set file LBA to free
+            free(buffer);
+            free(cleanBuffer);
+            free(indexOfFile);
+            free(indexOfBody);
+            return 1;
+        }
+    }
+    free(buffer);
+    free(cleanBuffer);
+    free(indexOfFile);
+    free(indexOfBody);
+    return 0;
+*/
