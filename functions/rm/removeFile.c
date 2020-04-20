@@ -28,6 +28,15 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     } 
     printf("- Parent directory folder index: %d\n", parentIndex);
 
+    /*******************Robert*************************
+     * 1. remove child reference from parent
+     * 2. read all #s from line 3 to 32 of LBA from file we are removing
+     *         - reinitialize each # (# is an index) to '.'
+     *         - set volume.map[#] = 0
+     * 3. Now reinitialize LBA of the file we are removing to '.'
+     * 4. set volume.map[fileWeAreRemoving] = 0
+     * *****************Robert*************************/
+
     /* Once the index of the directory is found, locate the files index and set 
        the map to 0 for body and 0 for both LBA */
     if (getName(buffer, name) == 1) {
