@@ -1,5 +1,44 @@
 # Please View this page by clicking 'RAW' button! :D
 
+# LBA structure (summary)
+## file
+#### 1: Name
+#### 2: file
+#### 3: metadata LBA index
+#### 4: LBA index of body #1
+#### ...
+#### 31: LBA index of body #28
+#### 32: LBA index for extended
+
+## folder
+#### 1: Name
+#### 2: folder
+#### 3: metadata LBA index
+#### 4: LBA index of child #1
+####   ...
+#### 31: LBA index of child #28
+#### 32: LBA index for extended
+
+## metadata
+#### 1: Name file/folder it is representing
+#### 2: metadata
+#### 3: type
+#### 4: value
+####   ...
+#### 31: type
+#### 32: value
+
+## extended
+#### 1: Name file/folder it is representing
+#### 2: extended
+#### 3: LBA index of body/child #29
+#### 4: LBA index of body/child #30
+#### ...
+#### 31: LBA index of body/child #59
+#### 32: LBA index for extended
+
+### ***************************************************
+
 ## Easiest
 ### $ make bang!
 ### $ make superclean! 
