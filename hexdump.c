@@ -25,6 +25,14 @@
 #include <unistd.h>
 #include <getopt.h>
 
+#ifndef uint64_t
+typedef u_int64_t uint64_t;
+#endif
+#ifndef uint32_t
+typedef u_int32_t uint32_t;
+#endif
+
+
 #define BUFSIZE 4096		//amount read at one time
 #define BLOCKSIZE 256		// number of bytes printed before a blank line
 #define LBABLOCKSIZE	512	// display blocks from command line are based on 512 bytes
@@ -39,17 +47,17 @@
 // Checks are done to ensure that blanks are displayed on the last line of the output
 // if the file only partially uses the last 16 bytes.
 
-int processFile (char * filename, u_int64_t startBlock, u_int64_t numBlocks)
+int processFile (char * filename, uint64_t startBlock, uint64_t numBlocks)
 	{
 	int readbytes;
 	int position = 0;
 	int loops = BUFSIZE / BLOCKSIZE;	//number of loops of blocks within one buffer read
 	int offset;
 	int k;
-	u_int64_t lbaBlockSize = LBABLOCKSIZE;
-	u_int64_t numBytesToStartBlock;
-	u_int64_t numBytesToProcess;
-	u_int64_t endOfFile;
+	uint32_t lbaBlockSize = LBABLOCKSIZE;
+	uint64_t numBytesToStartBlock;
+	uint64_t numBytesToProcess;
+	uint64_t endOfFile;
 
 	numBytesToProcess = numBlocks * lbaBlockSize;
 	numBytesToStartBlock = startBlock * lbaBlockSize;
@@ -89,20 +97,20 @@ int processFile (char * filename, u_int64_t startBlock, u_int64_t numBlocks)
 	
 	if (position > endOfFile)		//can not start past the end of the filename
 		{
-		printf ("Can not dump file %s, starting at block %lu, past the end of the file.\n\n", 
-			filename, startBlock);	
+		printf ("Can not dump file %s, starting at block %llu, past the end of the file.\n\n", 
+			filename, (unsigned long long)startBlock);	
 		return (-5);
 		}
 
 	// calculate max blocks we can display from the given start point
-	u_int64_t maxBlocks = (((endOfFile - position) + lbaBlockSize) - 1) / lbaBlockSize;
+	uint64_t maxBlocks = (((endOfFile - position) + lbaBlockSize) - 1) / lbaBlockSize;
 	if (numBlocks > maxBlocks)
 		numBlocks = maxBlocks;
 
 	
 	//Proces the file - the do loop goes until we read less bytes than the BUFSIZE
-	printf ("Dumping file %s, starting at block %lu for %lu block%c:\n\n", 
-		filename, startBlock, numBlocks, numBlocks != 1?'s':'\0');	
+	printf ("Dumping file %s, starting at block %llu for %llu block%c:\n\n", 
+		filename, (unsigned long long)startBlock, (unsigned long long)numBlocks, numBlocks != 1?'s':'\0');	
 	do
 		{
 		if (position >= (numBytesToStartBlock + numBytesToProcess))
@@ -142,7 +150,7 @@ int processFile (char * filename, u_int64_t startBlock, u_int64_t numBlocks)
 				else	
 					{
 					//If a full line, do one print for the full line
-					printf ("%06X: %02X %02X %02X %02X %02X %02X %02X %02X  %02X %02X %02X %02X %02X %02X %02X %02X  %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",
+					printf ("%06X: %02X %02X %02X %02X %02X %02X %02X %02X  %02X %02X %02X %02X %02X %02X %02X %02X | %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",
 						offset+position,
 						buf[offset + 0],buf[offset + 1],buf[offset + 2],buf[offset + 3],
 						buf[offset + 4],buf[offset + 5],buf[offset + 6],buf[offset + 7],
@@ -201,7 +209,7 @@ int processArguments (int argc, char * argv[])
 	{
 	int c;
 	int digit_optind = 0;
-	u_int64_t count, start;
+	uint64_t count, start;
 	count = 0; start = 0;
 	int retval;
 	char * filename = NULL;

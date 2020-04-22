@@ -44,6 +44,30 @@ int getIndex(char* key, struct filesystem_volume volume) {
     free(name);
     return -1;
 }
+///////////////////////// Possible idea for deleting files //////////////////////////////
+// void deleteName(char* buffer) {
+//     for(int i=0; i<16;i++) 
+//         buffer[i] = '.';
+// }
+
+// void deleteType(char* buffer) {
+//     for(int i=16; i < 16; i++) 
+//         buffer[i] = '.';
+// }
+
+// void disconnectMetaData(char* buffer) {
+//     int lineStart = (16*2);
+//     for(int i = lineStart; i < (lineStart + 16); i++) {
+//         buffer[i] = str[i - lineStart];
+//     }
+// }
+
+/* 
+    I say we just use 'initializeLBA(buffer, '.', volume.blocksize);'
+    - Robert
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 // 1
 int addName(char* name, char* buffer) {
@@ -135,5 +159,42 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
     return 1;
 }
 
+// return 0 if line empty, 1 if line not empty
+int getLine(char* buffer, char* line, int startIndex) {
+    int i;
+    if(buffer[startIndex] == '-') return 0;
+    for (i = startIndex; i < (startIndex + 16); i++) {
+        if(buffer[i] == '-') break;
+        line[i - startIndex] = buffer[i];
+    }
+    return 1;
+}
 
+// return 0 if line empty, 1 if line not empty
+int getName(char* buffer, char* name) {
+    return getLine(buffer, name, 0);
+}
 
+// return 0 if line empty, 1 if line not empty
+int getType(char* buffer, char* type) {
+    return getLine(buffer, type, 16);
+}
+
+/* returns 1 if it is the LBA, 0 if it isnt */
+int LBAis(struct filesystem_volume volume, int index, char* keyName, char* keyType) {
+    char* buffer = malloc(volume.blockSize);
+    char* name = malloc(16);
+    char* type = malloc(16);
+    int retVal = LBAread(buffer, 1, index); // need to add check here
+    if((getName(buffer, name)) != 1) return 0;
+    if((getType(buffer, type)) != 1) return 0;
+    if((strcmp(type, keyType) == 0) && (strcmp(name, keyName) == 0)) {
+        retVal = 1;
+    } else {
+        retVal = 0;
+    }
+    free(type);
+    free(name);
+    free(buffer);
+    return retVal;
+}

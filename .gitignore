@@ -3,3 +3,4 @@ hex
 volume
 hexdump_results.txt
 Filesystem.code-workspace
+.vscode/
