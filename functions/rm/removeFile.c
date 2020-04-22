@@ -50,6 +50,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             LBAread(metaBuffer,1, (atoi(indexOfFile) + 1));
             initializeLBA(metaBuffer, '.', volume.blockSize); 
             LBAwrite(metaBuffer,1,(atoi(indexOfFile) + 1));
+            volume.map[atoi(indexOfFile)+1] = 0;
 
             free(buffer);
             free(cleanBuffer);
