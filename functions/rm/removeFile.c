@@ -30,13 +30,13 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
 
     char* buffer = malloc(volume.blockSize);
     char* cleanBuffer = malloc(volume.blockSize);
-    intitializeLBA(cleanBuffer, '.', volume.blockSize);
+    initializeLBA(cleanBuffer, '.', volume.blockSize);
     char* indexOfFile = malloc(16);
     char* indexOfBody = malloc(16);
     for(int i = 48; i < volume.blockSize; i = i + 16) { // each line of parent folder
         if(getLine(buffer, indexOfFile, i) == 0) continue;
         if(LBAis(volume, atoi(indexOfFile), name, "file") == 1) { // is the index of the file we want to delete    
-            LBAread(buffer, 1, parentIndex);
+            LBAread(buffer, 1, atoi(indexOfFile));
             for(int j = 48; j < volume.blockSize; j = j + 16) { // each line of file we are removing
                 if(getLine(buffer, indexOfBody, i) == 0) continue; // skip all empty lines
                 LBAwrite(cleanBuffer, 1, atoi(indexOfBody)); // re-initializing the body LBA
@@ -49,7 +49,31 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             free(indexOfFile);
             free(indexOfBody);
 
-            printf("- COMPLETE\n");
+            printf("File name removed!\n");
+            return 1;
+        }
+    } 
+
+    /* The first for loop deletes the the 512 block that contains the name of the file, but the metadata still exists. 
+    Was trying to use the same logic to get rid of the metadata */
+    
+    for(int i = 48; i < volume.blockSize; i = i + 16) { // each line of parent folder
+        if(getLine(buffer, indexOfFile, i) == 0) continue;
+        if(LBAis(volume, atoi(indexOfFile), name, "metadata") == 1) { // is the index of the file we want to delete    
+            LBAread(buffer, 1, atoi(indexOfFile));
+            for(int j = 48; j < volume.blockSize; j = j + 16) { // each line of file we are removing
+                if(getLine(buffer, indexOfBody, i) == 0) continue; // skip all empty lines
+                LBAwrite(cleanBuffer, 1, atoi(indexOfBody)); // re-initializing the body LBA
+                volume.map[atoi(indexOfBody)] = 0; // set body LBA to free
+            }
+            LBAwrite(cleanBuffer, 1, atoi(indexOfFile)); // re-initializing the file LBA
+            volume.map[atoi(indexOfFile)] = 0; // set file LBA to free
+            free(buffer);
+            free(cleanBuffer);
+            free(indexOfFile);
+            free(indexOfBody);
+
+            printf("File metadata removed!\n");
             return 1;
         }
     }
@@ -63,7 +87,3 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
 
     
 }
-
-/* 
-    
-*/
