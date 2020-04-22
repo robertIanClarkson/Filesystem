@@ -29,6 +29,8 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     printf("- Parent directory folder index: %d\n", parentIndex);
 
     char* buffer = malloc(volume.blockSize);
+    int foo = LBAread( buffer, 1, parentIndex);
+
     char* cleanBuffer = malloc(volume.blockSize);
     char* metaBuffer = malloc(volume.blockSize);
 
@@ -38,7 +40,9 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     for(int i = 48; i < volume.blockSize; i = i + 16) { // each line of parent folder
         if(getLine(buffer, indexOfFile, i) == 0) continue;
         if(LBAis(volume, atoi(indexOfFile), name, "file") == 1) { // is the index of the file we want to delete    
-            LBAread(buffer, 1, atoi(indexOfFile));
+            deleteLine(buffer, i, '-'); // delete line from parent folder
+            LBAwrite(buffer, 1, parentIndex); // update LBA
+            LBAread(buffer, 1, atoi(indexOfFile)); // read index of file we want to delete
             for(int j = 48; j < volume.blockSize; j = j + 16) { // each line of file we are removing
                 if(getLine(buffer, indexOfBody, i) == 0) continue; // skip all empty lines
                 LBAwrite(cleanBuffer, 1, atoi(indexOfBody)); // re-initializing the body LBA
@@ -51,7 +55,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             initializeLBA(metaBuffer, '.', volume.blockSize); 
             LBAwrite(metaBuffer,1,(atoi(indexOfFile) + 1));
             volume.map[atoi(indexOfFile)+1] = 0;
-
+            
             free(buffer);
             free(cleanBuffer);
             free(indexOfFile);
@@ -67,7 +71,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     free(indexOfFile);
     free(indexOfBody);
 
-    printf("- COMPLETE\n");
+    printf("***ERROR: file: \"%s\" is not in folder \"%s\"***\n", name, folder);
     return 0; 
 
     
