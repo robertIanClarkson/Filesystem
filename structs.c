@@ -198,3 +198,9 @@ int LBAis(struct filesystem_volume volume, int index, char* keyName, char* keyTy
     free(buffer);
     return retVal;
 }
+
+void deleteLine(char* buffer, int lineStart, char initChar) {
+    for(int i = lineStart; i < (lineStart + 16); i++) {
+        buffer[i] = initChar;
+    }
+}  
