@@ -24,7 +24,7 @@ int getIndex(char* key, struct filesystem_volume volume) {
     for(int i = strlen(key); i < 16; i++) {
         key[i] = '-';
     }
-    key[16] = '\0';
+    key[16] = '\0'; // null terminator
 
     /* Find the parent LBA */
     uint64_t result;
@@ -204,4 +204,12 @@ void deleteLine(char* buffer, int lineStart, char initChar) {
     for(int i = lineStart; i < (lineStart + 16); i++) {
         buffer[i] = initChar;
     }
+}  
+
+int getNextEmptyLBA(struct filesystem_volume volume) {
+    for(int i = 0; i < volume.blockCount; i++) {
+        if(volume.map[i] == 0) return i;
+    }
+    return -1;
 }
+
