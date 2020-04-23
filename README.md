@@ -71,7 +71,7 @@
 #### Filesystem_Prompt$ cp foo hello blah world
 
 #### (move file 'foo' as 'blah' from directory 'hello' to directory 'world')
-#### Filesystem_Prompt$ cp foo hello blah world
+#### Filesystem_Prompt$ mv foo hello blah world
 
 #### (set meta data category 'author' to name 'foo' 'bar' in file 'hello' in directory 'world')
 #### Filesystem_Prompt$ set hello world author foo bar
