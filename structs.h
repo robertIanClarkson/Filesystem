@@ -56,4 +56,10 @@ int getType(char* buffer, char* type);
 /* returns 1 if it is the LBA, 0 if it isnt */
 int LBAis(struct filesystem_volume volume, int index, char* name, char* type);
 
+/* delete line(x16 char) at 'linestart' from 'buffer' and replace with 'initChar' */
+void deleteLine(char* buffer, int lineStart, char initChar);
+
+/* returns the next empty index in volume.map[index] */
+int getNextEmptyLBA(struct filesystem_volume volume);
+
 #endif /* stucts_h */
