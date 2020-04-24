@@ -24,12 +24,13 @@ int getIndex(char* key, struct filesystem_volume volume) {
     for(int i = strlen(key); i < 16; i++) {
         key[i] = '-';
     }
+    key[16] = '\0'; // null terminator
 
     /* Find the parent LBA */
     uint64_t result;
     char* buffer = malloc(volume.blockSize);
     char* name = malloc(16);
-    for(int i = 0; i < volume.blockCount; i++) { 
+    for(int i = 0; i < volume.blockCount; i++) {
         result = LBAread(buffer, 1, i);
         for(int j = 0; j < 16; j++) {
             name[j] = buffer[j];
@@ -37,7 +38,7 @@ int getIndex(char* key, struct filesystem_volume volume) {
         if(strcmp(name, key) == 0) {
             free(buffer);
             free(name);
-            return i; 
+            return i;
         }
     }
     free(buffer);
@@ -46,12 +47,12 @@ int getIndex(char* key, struct filesystem_volume volume) {
 }
 ///////////////////////// Possible idea for deleting files //////////////////////////////
 // void deleteName(char* buffer) {
-//     for(int i=0; i<16;i++) 
+//     for(int i=0; i<16;i++)
 //         buffer[i] = '.';
 // }
 
 // void deleteType(char* buffer) {
-//     for(int i=16; i < 16; i++) 
+//     for(int i=16; i < 16; i++)
 //         buffer[i] = '.';
 // }
 
@@ -62,7 +63,7 @@ int getIndex(char* key, struct filesystem_volume volume) {
 //     }
 // }
 
-/* 
+/*
     I say we just use 'initializeLBA(buffer, '.', volume.blocksize);'
     - Robert
 */
@@ -72,7 +73,7 @@ int getIndex(char* key, struct filesystem_volume volume) {
 // 1
 int addName(char* name, char* buffer) {
     int len = strlen(name);
-    if(len <= 16) { 
+    if(len <= 16) {
         /* first line of block */
         for(int i=0; i < strlen(name); i++) {
             buffer[i] = name[i];
@@ -103,11 +104,11 @@ int connectMetaData(int index, char* buffer) {
     int len = strlen(str);
 
     /* make sure length is less than 17 chars long */
-    if(len > 16){ 
+    if(len > 16){
         printf("***Metadata index too large (is > than 16 digits)***\n");
         free(str);
         return 0;
-    } 
+    }
 
     /* write to buffer */
     int lineStart = (16*2);
@@ -124,13 +125,13 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
     char* buffer = malloc(volume.blockSize);
     int retVal = LBAread(buffer, 1, parent);
     // need to add check
-    
+
     /* loop through available lines */
     int lineStart = (16*3);
     int i;
     for(i = lineStart; i < volume.blockSize; i = i + 16) {
         /* find an empty line to add child index */
-        if(buffer[i] == '-') { 
+        if(buffer[i] == '-') {
             printf("  - addChild at index: %d\n", i);
             break;
         }
@@ -146,7 +147,7 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
         free(buffer);
         free(str);
         return 0;
-    } 
+    }
 
     /* add str to buffer */
     for(int j = i; j < (i + len); j++) {
@@ -204,3 +205,11 @@ void deleteLine(char* buffer, int lineStart, char initChar) {
         buffer[i] = initChar;
     }
 }  
+
+int getNextEmptyLBA(struct filesystem_volume volume) {
+    for(int i = 0; i < volume.blockCount; i++) {
+        if(volume.map[i] == 0) return i;
+    }
+    return -1;
+}
+
