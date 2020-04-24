@@ -31,3 +31,28 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     if(returnSource < 1)
 
 }
+
+/* 
+[0] command
+[1] local file path (linux)
+[2] our file name
+[3] file directory
+
+1. create new file --> createFile(...)
+2. get index of new file --> fileIndex = getIndex(...)
+3. get file size of the file we want to copy
+4. find empty LBA --> emptyLBAIndex
+5. read blockSize # of bytes from linux file --> copyBuffer = malloc(blocksize) {this line might not be needed}
+                                             --> FILE file = open(command.args[1])
+                                             --> copyBuffer = file.readNbytes(blockSize);
+6. write buffer back to the LBA --> LBAwrite(copyBuffer, 1, emptyLBAIndex)
+7. add emptyLBAIndex as child to new file --> addChild(emptyLBAIndex, fileIndex, volume);
+8. free(mallocs)...
+
+NOTE: I would write a function in structs called addBody(fileIndex, blockSize, linuxFileSize) --> adds a body to a file
+						 addBody(230, 512, 1024) --> for(2 LBAs) 
+						 				--> find free block
+						 				--> write linux buffer to LBA
+										--> addChild to fileIndex
+						                         	
+*/
