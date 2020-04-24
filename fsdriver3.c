@@ -15,6 +15,7 @@
 #include "./functions/rm/removeFile.h" /* (removeFile) */
 #include "./functions/set/setMetaData.h" /* (setMetaData) */
 #include "./functions/touch/createFile.h" /* (createFile) */
+#include "./functions/special2/special2.h" /* (special2) */
 
 int createRoot(struct filesystem_volume volume) {
     uint64_t result;
