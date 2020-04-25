@@ -6,12 +6,12 @@
 int special1(struct filesystem_volume volume, struct arguments command) {
     ssize_t returnSource
 
-    /* check if command.argc != 2 */
-    if(command.argc < 4) {
+    /* check if command.argc != 3 */
+    if(command.argc < 3) {
         printf("***Not Enough Args***\n");
         return 0; // check
     }
-    else if(command.argc > 4) {
+    else if(command.argc > 3) {
 	    printf("***TOO many Args***\n");
 	    return 0; //check
     }
