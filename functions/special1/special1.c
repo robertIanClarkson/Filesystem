@@ -6,20 +6,19 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     ssize_t returnSource, returnDestination;
     char buffer[BUF_SIZE];
 
-    /* check if command.argc != 2 */
-    if(command.argc < 4) {
+    /* check if command.argc != 3 */
+    if(command.argc < 3) {
         printf("***Not Enough Args***\n");
         return 0; // check
     }
-    else if(command.argc > 4) {
+    else if(command.argc > 3) {
 	    printf("***TOO many Args***\n");
 	    return 0; //check
     }
 
     // Get args 
     char* sourceFile = command.args[1];
-    char* fileName = command.args[2];
-    char* destinationFile = command.args[3];
+    char* destinationFile = command.args[2];
 
     // Open Linux File 
     int linuxFile = open(linuxFile, O_RDONLY);
@@ -27,7 +26,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     int DSFile = open(destinationFile, O_WRONLY | O_CREAT, 0644);
     //negative value is returned, then there was an error opening the file
     if(linuxFile < 0){
-	printf("***ERROR CANNOT OPEN FILE***");
+	printf("***ERROR CANNOT OPEN FILE***");	
         return 0;
     }
     if(linuxFile > 0){
@@ -42,6 +41,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     	}
 	else if(newFile != NULL){
 	printf("***CREATING FILE***\n")	
+		 /* Copy process */
 		while((returnSource = read (linuxFile, &buffer, BUF_SIZE)) > 0){
             		returnDestination = write (DSFile, &buffer, (ssize_t) returnSource);
             		if(returnDestination != returnSource){
