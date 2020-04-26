@@ -1,10 +1,9 @@
-  
 #include "special1.h"
 /* one to copy from the normal filesystem to your filesystem */
 /* command = "special1 sourceFile ourFileName ourFileDirectory" */
 
 int special1(struct filesystem_volume volume, struct arguments command) {
-    ssize_t returnSource
+    ssize_t returnSource;
 
     /* check if command.argc != 4 */
     if(command.argc < 4) {
@@ -21,13 +20,20 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     char* ourFileDirectory = command.args[3];
 
     // how many blocks the file is 
+    int totalSize;
     int totalBlocks;
 
     // declare stat variable
     struct stat st; 
 
     // a new File is created using the touch command, with the name and directory coming from args
-    createFile(ourFileName, ourFileDirectory);
+    struct arguments newArgs;
+    newArgs.argc = 3;
+    strcpy(newArgs.args[0], "touch");
+    strcpy(newArgs.args[1], ourFileName);
+    strcpy(newArgs.args[2], ourFileDirectory);
+    if(createFile(volume, newArgs) == 0)
+        printf("***FAILED TO CREATE NEW FILE***\n");
 
     // get index of new file created
     int fileIndex = getIndex(ourFileName, volume);
@@ -39,14 +45,21 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     // get file size of the file we want to copy 
     /* http://man7.org/linux/man-pages/man2/stat.2.html */
-    if(stat(file_name,&st) == 0)
+    if(stat(sourceFile,&st) == 0) {
         // st_blocks - Number of 512B blocks allocated
         // st_size - Total size, in bytes *might be needed instead for the read function*
-        totalBlocks = st.st_blocks;
-    else {
+        totalSize = st.st_size;
+        printf("totalSize: %d\n",totalSize);
+    } else {
         printf("***ERROR UNABLE TO RETRIEVE SIZE***");
         return 0;
     }
+    if((totalSize%512) != 0) 
+        totalBlocks = (totalSize/512) + 1; 
+    else
+        totalBlocks = totalSize/512;
+
+    printf("totalBlocks: %d\n",totalBlocks);
 
     // find empty LBA
     int freeLBAIndex = getNextEmptyLBA(volume);
@@ -55,11 +68,15 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     int linuxFile = open(sourceFile, O_RDONLY);
 
     // read linux file *need to make sure this dumps contents of file into returnSource*
-    char* buffer = malloc(volume.blockSize);
-    returnSource = read(linuxFile, &buffer, totalBlocks*512);
+    char* buffer = malloc(volume.volumeSize);
+    returnSource = read(linuxFile, buffer, totalSize);
+    buffer[returnSource] = '\0';
+    printf("returnSource: %ld\n",returnSource);
+    printf("Those bytes are as follows: %s\n",buffer);
 
     // write buffer back to the LBA
-    LBAwrite(buffer, totalBlocks, freeLBAIndex);
+    int temp = LBAwrite(buffer, totalBlocks, freeLBAIndex);
+    printf("LBAwrite return is: %d\n", temp);
 
     // mark map to show LBAIndex is filled
     volume.map[freeLBAIndex] = 1;
@@ -74,74 +91,6 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     // free mallocs
     free(buffer);
 
-    printf("File successfully copied from LINUX to Filesystem");
+    printf("File successfully copied from LINUX to Filesystem\n");
     return 1;
 }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Open Linux File 
-    //int linuxFile = open(linuxFile, O_RDONLY);
-    // Open Destination File
-    //int DSFile = open(destinationFile, O_WRONLY | O_CREAT, 0644);
-    //negative value is returned, then there was an error opening the file
-   // if(linuxFile < 0){
-//	printf("***ERROR CANNOT OPEN FILE***");
-      //  return 0;
-   // }
-   // if(linuxFile > 0){
-   // 	printf("*OPENING THE FILE*");
-	//FILE* newFile;
-	//newFile = fopen(comman.args[1], "r");
-	//if(newFile == NULL)
-    //	{
-        /* File not created hence exit */
-      //  printf("***UNABLE TO CREATE FILE.***\n");
-       // return 0;
-    //	}
-	//else if(newFile != NULL){
-//	printf("***CREATING FILE***\n")	
-	//	while((returnSource = read (linuxFile, &buffer, BUF_SIZE)) > 0){
-            	//	returnDestination = write (DSFile, &buffer, (ssize_t) returnSource);
-            	//	if(returnDestination != returnSource){
-                	/* Write error */
-                //	perror("***FILE DO NOT MATCH***");
-                //	return 4;
-            	//	}
-   	//	}
-//	}
-	
-//	return 1;
- //   }
- //   returnSource = read(linuxFile,&buffer,BUF_SIZE));
-
-  //  if(returnSource < 1)
-
-//}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/* 
-[0] command -done
-[1] local file path (linux) -done
-[2] our file name -done
-[3] file directory -done
-
-1. create new file --> createFile(...) -done
-2. get index of new file --> fileIndex = getIndex(...) -done
-3. get file size of the file we want to copy -done
-4. find empty LBA --> emptyLBAIndex -done
-5. read blockSize # of bytes from linux file --> copyBuffer = malloc(blocksize) {this line might not be needed}
-                                             --> FILE file = open(command.args[1])
-                                             --> copyBuffer = file.readNbytes(blockSize);
-6. write buffer back to the LBA --> LBAwrite(copyBuffer, 1, emptyLBAIndex) -
-7. add emptyLBAIndex as child to new file --> addChild(emptyLBAIndex, fileIndex, volume); -
-8. free(mallocs)...
-NOTE: I would write a function in structs called addBody(fileIndex, blockSize, linuxFileSize) --> adds a body to a file
-						 addBody(230, 512, 1024) --> for(2 LBAs) 
-						 				--> find free block
-						 				--> write linux buffer to LBA
-										--> addChild to fileIndex
-						                         	
-*/

@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include "../../structs.h"
 #include "../../low/fsLow.h"
+#include "../touch/createFile.h"
 
 int special1(struct filesystem_volume volume, struct arguments command);
 
