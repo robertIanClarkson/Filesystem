@@ -1,0 +1,200 @@
+AirportCode	CityName	WorldAreaCode
+AAC	"AL ARISH, ARAB REP. OF EGYPT       "	591
+AAE	"ANNABA, ALGERIA                    "	500
+AAF	"APALACHICOLA, FLORIDA, USA         "	33
+AAH	"AACHEN, GERMANY                    "	429
+AAI	"ARRAIAS, BRAZIL                    "	316
+AAJ	"AWARADAM, REP. OF SURINAME         "	379
+AAK	"ARANUKA, REP. OF KIRIBATI          "	824
+AAL	"AALBORG, DENMARK                   "	419
+AAM	"MALA MALA, SOUTH AFRICA            "	562
+AAN	"AL AIN, UNITED ARAB EMIRATES       "	678
+AAO	"ANACO, VENEZUELA                   "	388
+AAQ	"ANAPA, RUSSIA                      "	475
+AAR	"AARHUS, DENMARK                    "	419
+AAS	"APALAPSILI, INDONESIA              "	832
+AAT	"ALTAY, CHINA                       "	713
+AAU	"ASAU, W. SAMOA                     "	892
+AAV	"ALAH, PHILIPPINES                  "	766
+AAW	"ABBOTTABAD, PAKISTAN               "	764
+AAX	"ARAXA, BRAZIL                      "	316
+AAY	"AL GHAYDAH, YEMEN                  "	694
+ABA	"ABAKAN, RUSSIA                     "	770
+ABD	"ABADAN, IRAN                       "	632
+ABE	"ALLENTOWN, PENNSYLVANIA, USA       "	23
+ABF	"ABAIANG, REP. OF KIRIBATI          "	824
+ABG	"ABINGDON, QLD., AUSTRALIA          "	802
+ABH	"ALPHA, QLD., AUSTRALIA             "	802
+ABI	"ABILENE, TEXAS, USA                "	74
+ABJ	"ABIDJAN, IVORY COAST               "	533
+ABK	"KABRI DAR, ETHIOPIA                "	522
+ABL	"AMBLER, ALASKA, USA                "	1
+ABM	"BAMAGA, QLD., AUSTRALIA            "	802
+ABN	"ALBINA, SURINAM                    "	379
+ABO	"ABOISSO, COTE D'IVOIRE             "	533
+ABP	"ATKAMBA, PAPUA NEW GUINEA          "	804
+ABQ	"ALBUQUERQUE, NEW MEXICO, USA       "	86
+ABR	"ABERDEEN, SOUTH DAKOTA, USA        "	67
+ABS	"ABU SIMBEL, ARAB REP. OF EGYPT     "	591
+ABT	"AL-BAHA, SAUDI ARABIA              "	670
+ABU	"ATAMBUA, INDONESIA                 "	832
+ABV	"ABUJA, NIGERIA                     "	555
+ABW	"ABAU, PAPUA NEW GUINEA             "	804
+ABX	"ALBURY, N.S.W., AUSTRALIA          "	802
+ABY	"ALBANY, GEORGIA, USA               "	34
+ABZ	"ABERDEEN, SCOTLAND, (U.K.)         "	493
+ACA	"ACAPULCO, MEXICO                   "	148
+ACB	"BELLAIRE, MICHIGAN, USA            "	43
+ACC	"ACCRA, GHANA                       "	529
+ACD	"ACANDI, COLOMBIA                   "	327
+ACE	"ARRECIFE, CANARY IS.               "	482
+ACH	"ALTENRHEIN, SWITZERLAND            "	486
+ACI	"ALDERNEY, CHANNEL IS., (U.K.)      "	493
+ACK	"NANTUCKET, MASSACHUSETTS, USA      "	13
+ACL	"AGUA CLARA, COLOMBIA               "	327
+ACM	"ARICA, COLOMBIA                    "	327
+ACN	"CIUDAD ACUNA, MEXICO               "	148
+ACO	"ASCONA, SWITZERLAND                "	486
+ACR	"ARARACUARA, COLOMBIA               "	327
+ACS	"ACHINSK, RUSSIA                    "	770
+ACT	"WACO, TEXAS, USA                   "	74
+ACU	"ACHUTUPO, PANAMA REP.              "	162
+ACV	"EUREKA/ARCATA, CALIFORNIA, USA     "	91
+ACY	"ATLANTIC CITY, NEW JERSEY, USA     "	21
+ADA	"ADANA, TURKEY                      "	679
+ADB	"IZMIR-ADNAN MEND, TURKEY           "	679
+ADD	"ADDIS ABABA, ETHIOPIA              "	522
+ADE	"ADEN, YEMEN                        "	694
+ADG	"ADRIAN, MICHIGAN, USA              "	43
+ADH	"ALDAN, RUSSIA                      "	770
+ADI	"ARANDIS, S.W. AFRICA               "	575
+ADJ	"AMMAN-CIVIL, JORDAN                "	639
+ADK	"ADAK ISLAND, ALASKA, USA           "	1
+ADL	"ADELAIDE, S. AUSTRALIA             "	802
+ADM	"ARDMORE, OKLAHOMA, USA             "	73
+ADN	"ANDES, COLOMBIA                    "	327
+ADO	"ANDAMOOKA, S. AUSTRALIA            "	802
+ADP	"ANURADHAPURA, SRI LANKA            "	711
+ADQ	"KODIAK, ALASKA, USA                "	1
+ADR	"ANDREWS, SOUTH CAROLINA, USA       "	37
+ADS	"DALLAS/FT. WORTH, TEXAS, USA       "	74
+ADT	"ADA, OKLAHOMA, USA                 "	73
+ADU	"ARDABIL, IRAN, ISLAMIC REP. OF     "	632
+ADV	"ANDOVER, ENGLAND UK                "	493
+ADW	"ANDREWS AFB, MARYLAND, USA         "	35
+ADX	"ST. ANDREWS, SCOTLAND UK           "	493
+ADY	"ALLDAYS, SOUTH AFRICA              "	562
+ADZ	"SAN ANDRES IS., COLOMBIA           "	327
+AEA	"ABEMAMA, GILBERT IS., S. PACIFIC   "	824
+AEG	"AEK GODANG, INDONESIA              "	832
+AEH	"ABECHER, CHAD                      "	511
+AEK	"ASEKI, PAPUA NEW GUINEA            "	804
+AEL	"ALBERT LEA, MINNESOTA, USA         "	63
+AEO	"AIOUN EL ATROUSS, MAURITANIA       "	545
+AEP	"BUENOS AIRES, ARGENTINA            "	303
+AER	"ADLER/SOCHI, RUSSIA                "	475
+AES	"AALESUND, NORWAY                   "	465
+AET	"ALLAKAKET, ALASKA, USA             "	1
+AEX	"ALEXANDRIA, LOUISIANA, USA         "	72
+AEY	"AKUREYRI, ICELAND                  "	439
+AFA	"SAN RAFAEL, ARGENTINA              "	303
+AFD	"PORT ALFRED, SOUTH AFRICA          "	562
+AFI	"AMALFI, COLOMBIA                   "	327
+AFL	"ALTA FLORESTA, BRAZIL              "	316
+AFN	"JAFFREY, NEW HAMPSHIRE, USA        "	14
+AFO	"AFTON, WYOMING, USA                "	88
+AFR	"AFORE, PAPUA NEW GUINEA            "	804
+AFT	"AFUTARA, SOLOMON ISLANDS           "	874
+AFW	"DALLAS/FT. WORTH, TEXAS, USA       "	74
+AFY	"AFYON, TURKEY                      "	679
+AGA	"AGADIR, MOROCCO                    "	548
+AGB	"AUGSBURG, GERMANY                  "	429
+AGC	"PITTSBURGH, PENNSYLVANIA, USA      "	23
+AGD	"ANGGI, INDONESIA                   "	832
+AGE	"WANGEROOGE, GERMANY                "	429
+AGF	"AGEN, FRANCE                       "	427
+AGG	"ANGORAM, PAPUA NEW GUINEA          "	804
+AGH	"ANGELHOLM/HELSINGBORG, SWEDEN      "	484
+AGI	"WAGENINGEN, REPUBLIC OF SURINAME   "	379
+AGJ	"AGUNI, JAPAN                       "	736
+AGK	"KAGUA, PAPUA NEW GUINEA            "	804
+AGL	"WANIGELA, PAPUA NEW GUINEA         "	804
+AGM	"ANGMAGSSALIK, GREENLAND            "	975
+AGN	"ANGOON, ALASKA, USA                "	1
+AGO	"MAGNOLIA, ARKANSAS, USA            "	71
+AGP	"MALAGA, SPAIN                      "	482
+AGQ	"AGRINION, GREECE                   "	433
+AGR	"AGRA, INDIA                        "	733
+AGS	"AUGUSTA, GEORGIA, USA              "	34
+AGT	"CIUDAD PRES. STROESSNER, PARAGUAY  "	365
+AGU	"AGUASCALIENTES, MEXICO             "	148
+AGV	"ACARIGUA, VENEZUELA                "	388
+AGW	"AGNEW, QLD., AUSTRALIA             "	802
+AGX	"AGATTI ISLAND, INDIA               "	733
+AGY	"ARGYLE DOWNS, W. AUSTRALIA         "	802
+AGZ	"AGGENEYS, SOUTH AFRICA             "	562
+AHA	"OKINAWA, JAPAN--NAHA AFB           "	736
+AHB	"ABHA, SAUDI ARABIA                 "	670
+AHD	"ARDMORE, OKLAHOMA, USA             "	73
+AHF	"ARAPAHOE, NEBRASKA, USA            "	65
+AHH	"AMERY, WISCONSIN, USA              "	45
+AHI	"AMAHAI, INDONESIA                  "	832
+AHL	"AISHALTON, GUYANA                  "	350
+AHN	"ATHENS, GEORGIA, USA               "	34
+AHO	"ALGHERO, ITALY                     "	450
+AHS	"AHUAS, HONDURAS                    "	131
+AHT	"AMCHITKA, ALASKA, USA              "	1
+AHU	"AL HOCEIMA, MOROCCO                "	548
+AHY	"AMBATOLAHY, DEM. REP. MADAGASCAR   "	541
+AHZ	"ALPE D'HUEZ, FRANCE                "	427
+AIA	"ALLIANCE, NEBRASKA, USA            "	65
+AIB	"ANITA BAY, ALASKA, USA             "	1
+AIC	"AIROK, MARSHALL ISLANDS            "	844
+AID	"ANDERSON, INDIANA, USA             "	42
+AIE	"AIOME, PAPUA NEW GUINEA            "	804
+AIF	"ASSIS, BRAZIL                      "	316
+AIG	"YALINGA, CEN. AFRICAN REPUBLIC     "	509
+AII	"ALI SABIEH, PEOP. REP OF DJIBOUTI  "	525
+AIK	"AIKEN, SOUTH CAROLINA, USA         "	37
+AIL	"AILIGANDI, PANAMA REPUBLIC         "	162
+AIM	"AILUK, MARSHALL ISLANDS            "	844
+AIN	"WAINWRIGHT, ALASKA, USA            "	1
+AIO	"ATLANTIC, IOWA, USA                "	61
+AIP	"AILINGLAPALAP, MARSHALL ISLANDS    "	844
+AIR	"ARIPUANA, MT, BRAZIL               "	316
+AIS	"ARORAE, REP. OF KIRIBATI           "	824
+AIT	"AITUTAKI, COOK IS., S. PACIFIC     "	813
+AIU	"ATIU, COOK IS., S. PACIFIC         "	813
+AIV	"ALICEVILLE, ALABAMA, USA           "	51
+AIY	"ATLANTIC CITY, NEW JERSEY, USA     "	21
+AIZ	"LAKE OF THE OZARKS, MISSOURI, USA  "	64
+AJA	"AJACCIO, CORSICA, FRANCE           "	427
+AJF	"JOUF, SAUDI ARABIA                 "	670
+AJJ	"AKJOUJT, MAURITANIA                "	545
+AJL	"AIJAL, INDIA                       "	733
+AJN	"ANJOUAN, COMORO IS.                "	513
+AJO	"ALJOUF, YEMEN                      "	694
+AJR	"ARVIDSJAUR, SWEDEN                 "	484
+AJS	"ABREOJOS, MEXICO                   "	148
+AJU	"ARACAJU, BRAZIL                    "	316
+AJY	"AGADES, NIGER                      "	554
+AKA	"ANKANG, CHINA                      "	713
+AKB	"ATKA ISLAND, ALASKA, USA           "	1
+AKC	"AKRON/CANTON, OHIO-FULTON, USA     "	44
+AKD	"AKOLA, INDIA                       "	733
+AKE	"AKIENI, GABON                      "	526
+AKF	"KUFRAH, LIBYA                      "	538
+AKG	"ANGUGANAK, PAPUA NEW GUINEA        "	804
+AKI	"AKIAK, ALASKA, USA                 "	1
+AKJ	"ASAHIGAWA, JAPAN                   "	736
+AKK	"AKHIOK, ALASKA, USA                "	1
+AKL	"AUCKLAND, NEW ZEALAND              "	851
+AKM	"ZAKOUMA, CHAD                      "	511
+AKN	"KING SALMON, ALASKA, USA           "	1
+AKO	"AKRON, COLORADO, USA               "	82
+AKP	"ANAKTUVUK PASS, ALASKA, USA        "	1
+AKQ	"ASTRAKSETRA, INDONESIA             "	832
+AKR	"AKURE, NIGERIA                     "	555
+AKS	"AUKI, SOLOMON IS.                  "	874
+AKT	"AKROTIRI, CYPRUS                   "	611
+AKU	"AKSU, CHINA                        "	713
