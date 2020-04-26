@@ -223,3 +223,16 @@ void setMap(int at, char ch, struct filesystem_volume volume) {
     free(buffer);
 }
 
+int LBAfreeCount(struct filesystem_volume volume) {
+    int foo;
+    int sum = 0;
+    char* buffer = malloc(volume.blockSize);
+    for(int i = volume.map_start; i < volume.file_start; i++) {
+        foo = LBAread(buffer, 1, i);
+        for(int j = 0; j < volume.blockSize; j++) {
+            if(buffer[j] == '0') sum += 1;
+        }
+    }
+    return sum;
+}
+

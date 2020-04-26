@@ -66,4 +66,6 @@ int getNextEmptyLBA(struct filesystem_volume volume);
 
 void setMap(int at, char ch, struct filesystem_volume volume);
 
+int LBAfreeCount(struct filesystem_volume volume);
+
 #endif /* stucts_h */
