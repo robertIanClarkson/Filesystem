@@ -14,6 +14,8 @@ struct filesystem_volume {
     uint64_t volumeSize;
 	uint64_t blockSize;
     uint64_t blockCount;
+    uint64_t map_start;
+    uint64_t file_start;
     int* map;
     int retVal;
 };
@@ -61,5 +63,7 @@ void deleteLine(char* buffer, int lineStart, char initChar);
 
 /* returns the next empty index in volume.map[index] */
 int getNextEmptyLBA(struct filesystem_volume volume);
+
+void setMap(int at, char ch, struct filesystem_volume volume);
 
 #endif /* stucts_h */

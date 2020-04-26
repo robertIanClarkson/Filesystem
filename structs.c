@@ -213,3 +213,13 @@ int getNextEmptyLBA(struct filesystem_volume volume) {
     return -1;
 }
 
+void setMap(int at, char ch, struct filesystem_volume volume) {
+    int index = floor(((double) at) / ((double) volume.blockSize));
+    index += volume.map_start;
+    char* buffer = malloc(volume.blockSize);
+    int foo = LBAread(buffer, 1, index);
+    buffer[(at - (index * volume.blockSize))] = ch;
+    foo = LBAwrite(buffer, 1, index);
+    free(buffer);
+}
+
