@@ -119,7 +119,7 @@ int main (int main_argc, char *main_argv[]) {
         } else if(strcmp(command.opt, "set") == 0) {
             success = setMetaData(volume, command);
         } else if(strcmp(command.opt, "special1") == 0) {
-            // success = special1(volume, command); /* command = "special1 linuxDestinationFile sourceFile" */
+            // success = special1(volume, command); /* command = "special1 sourceFile ourFileName ourFileDirectory" */
         } else if(strcmp(command.opt, "special2") == 0) {
             // success = special2(volume, command); /* command = "special2 sourceFile linuxDestinationFile" */
         } else if(strcmp(command.opt, "help") == 0) {
@@ -134,7 +134,7 @@ int main (int main_argc, char *main_argv[]) {
             printf("\tspecial command 2 = special2\n");
             printf("\texit prompt = exit\n");
         } else if(strcmp(command.opt, "exit") != 0) {
-            printf("Invalid Command: %s\n", command.opt);
+            printf("Invalid Command: %s\n", command.opt);u
         }
         if(!success) {
             printf("******ERROR: %s ******\n", command.opt);

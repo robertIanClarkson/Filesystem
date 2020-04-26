@@ -1,17 +1,17 @@
   
 #include "special1.h"
 /* one to copy from the normal filesystem to your filesystem */
-/* command = "special2 sourceFile linuxDestinationFile" */
+/* command = "special1 sourceFile ourFileName ourFileDirectory" */
 
 int special1(struct filesystem_volume volume, struct arguments command) {
     ssize_t returnSource
 
-    /* check if command.argc != 3 */
-    if(command.argc < 3) {
+    /* check if command.argc != 4 */
+    if(command.argc < 4) {
         printf("***Not Enough Args***\n");
         return 0; // check
     }
-    else if(command.argc > 3) {
+    else if(command.argc > 4) {
 	    printf("***TOO many Args***\n");
 	    return 0; //check
     }
@@ -21,7 +21,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     char* ourFileDirectory = command.args[3];
 
     // how many blocks the file is 
-    int blockSize;
+    int totalBlocks;
 
     // declare stat variable
     struct stat st; 
@@ -30,14 +30,19 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     createFile(ourFileName, ourFileDirectory);
 
     // get index of new file created
-    fileIndex = getIndex(ourFileName);
+    int fileIndex = getIndex(ourFileName, volume);
+    
+    if(fileIndex < 0) {
+        printf("***ERROR INDEX COULD NOT BE FOUND***");
+        return 0;
+    }
 
     // get file size of the file we want to copy 
     /* http://man7.org/linux/man-pages/man2/stat.2.html */
     if(stat(file_name,&st) == 0)
         // st_blocks - Number of 512B blocks allocated
         // st_size - Total size, in bytes *might be needed instead for the read function*
-        blockSize = st.st_blocks;
+        totalBlocks = st.st_blocks;
     else {
         printf("***ERROR UNABLE TO RETRIEVE SIZE***");
         return 0;
@@ -50,18 +55,26 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     int linuxFile = open(sourceFile, O_RDONLY);
 
     // read linux file *need to make sure this dumps contents of file into returnSource*
-    returnSource = read(linuxFile, 'need a buffer', 'size of file')
+    char* buffer = malloc(volume.blockSize);
+    returnSource = read(linuxFile, &buffer, totalBlocks*512);
 
     // write buffer back to the LBA
-    LBAwrite('same buffer', blockSize, freeLBAIndex);
+    LBAwrite(buffer, totalBlocks, freeLBAIndex);
+
+    // mark map to show LBAIndex is filled
+    volume.map[freeLBAIndex] = 1;
 
     // add freeLBAIndex as child to new file
-    addChild(freeLBAIndex, fileIndex, volume);
+    if (addChild(freeLBAIndex, fileIndex, volume) != 1) {
+        free(buffer);
+        printf("***ERROR ADDING CHILD TO FOLDER***");
+        return 0;
+    }
 
     // free mallocs
- 
+    free(buffer);
 
-    printf("File successfuly copied from LINUX to Filesystem");
+    printf("File successfully copied from LINUX to Filesystem");
     return 1;
 }
 
