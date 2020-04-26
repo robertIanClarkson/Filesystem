@@ -1,3 +1,4 @@
+#include <math.h>
 #include "special1.h"
 /* one to copy from the normal filesystem to your filesystem */
 /* command = "special1 sourceFile ourFileName ourFileDirectory" */
@@ -37,60 +38,43 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     // get index of new file created
     int fileIndex = getIndex(ourFileName, volume);
-    
     if(fileIndex < 0) {
         printf("***ERROR INDEX COULD NOT BE FOUND***");
         return 0;
     }
 
-    // get file size of the file we want to copy 
-    /* http://man7.org/linux/man-pages/man2/stat.2.html */
-    if(stat(sourceFile,&st) == 0) {
-        // st_blocks - Number of 512B blocks allocated
-        // st_size - Total size, in bytes *might be needed instead for the read function*
-        totalSize = st.st_size;
-        printf("totalSize: %d\n",totalSize);
-    } else {
-        printf("***ERROR UNABLE TO RETRIEVE SIZE***");
-        return 0;
+    // get filesize of linux file
+    long int linuxFileSize = getFileSize(sourceFile);
+    printf("Linux FileSize: %ld\n", linuxFileSize);
+
+    // get number of LBA we will need
+    int LBAcount = ceil(((double) linuxFileSize) / ((double) volume.blockSize));
+    printf("Number of LBAs we need: %d\n", LBAcount);
+   
+    // main logic loop 
+    int emptyBlock;
+    int startIndex;
+    int readSize;
+    char* buffer = malloc(volume.blockSize);
+    for(int i = 0; i < LBAcount; i++) {
+        // get a free block
+        emptyBlock = getNextEmptyLBA(volume);
+        volume.map[emptyBlock] = 1;
+        printf("Empty LBA at: %d\n", emptyBlock);
+
+        // read file into buffer
+        initializeLBA(buffer, '-', volume.blockSize);
+        readNBytes(buffer, sourceFile, 0, volume.blockSize);
+        LBAwrite(buffer, 1, emptyBlock);
+
+        // add block to file
+        addChild(emptyBlock, fileIndex, volume);
+        printf("Add Child at %d to file at %d\n", emptyBlock, fileIndex);
+
     }
-    if((totalSize%512) != 0) 
-        totalBlocks = (totalSize/512) + 1; 
-    else
-        totalBlocks = totalSize/512;
-
-    printf("totalBlocks: %d\n",totalBlocks);
-
-    // find empty LBA
-    int freeLBAIndex = getNextEmptyLBA(volume);
-
-    // open linux file
-    int linuxFile = open(sourceFile, O_RDONLY);
-
-    // read linux file *need to make sure this dumps contents of file into returnSource*
-    char* buffer = malloc(volume.volumeSize);
-    returnSource = read(linuxFile, buffer, totalSize);
-    buffer[returnSource] = '\0';
-    printf("returnSource: %ld\n",returnSource);
-    printf("Those bytes are as follows: %s\n",buffer);
-
-    // write buffer back to the LBA
-    int temp = LBAwrite(buffer, totalBlocks, freeLBAIndex);
-    printf("LBAwrite return is: %d\n", temp);
-
-    // mark map to show LBAIndex is filled
-    volume.map[freeLBAIndex] = 1;
-
-    // add freeLBAIndex as child to new file
-    if (addChild(freeLBAIndex, fileIndex, volume) != 1) {
-        free(buffer);
-        printf("***ERROR ADDING CHILD TO FOLDER***");
-        return 0;
-    }
-
-    // free mallocs
-    free(buffer);
 
     printf("File successfully copied from LINUX to Filesystem\n");
     return 1;
 }
+
+// test_files/test_small.txt
