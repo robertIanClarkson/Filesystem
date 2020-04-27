@@ -20,7 +20,7 @@ int initMap(struct filesystem_volume volume) {
     /* check if Already initiialzed */
     char* buffer = malloc(volume.blockSize);
     int foo = LBAread(buffer, 1, volume.map_start);
-    if(buffer[0] == '.') {
+    if(buffer[0] != 0) {
         free(buffer);
         return 0; // check
     }
@@ -105,13 +105,13 @@ int main (int main_argc, char *main_argv[]) {
             printf("\t\t***MAP Already Initialized***\n");
         } else { // creating system
             printf("\t\t***MAP Initialized***\n");
+            
+            /* Set root directory */
+            if(createRoot(volume) != 1) {
+                printf("\t***FAILED TO CREATE ROOT***\n");
+                return EXIT_FAILURE; /* Set root directory */
+            }
         }        
-
-        /* Set root directory */
-        if(createRoot(volume) != 1) {
-            printf("\t***FAILED TO CREATE ROOT***\n");
-            return EXIT_FAILURE; /* Set root directory */
-        }
     } else if(volume.retVal == -1) {
         printf("\t- RESULT: file exists but can not open for write\n");
         // return EXIT_FAILURE;
