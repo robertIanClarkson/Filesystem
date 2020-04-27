@@ -18,25 +18,25 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     printf("- Looking for Index LBA\n");
     int i;
     for(i = 0; i < volume.blockCount; i++) {
-        if(volume.map[i] == 0) break;
+        if(getMap(i, volume) == '0') break;
     }
     printf("  - Empty LBA at: %d\n", i);
 
     /* mark LBA as used */
     printf("  - Marking LBA as used\n");
-    volume.map[i] = 1;
+    setMap(i, '1', volume);
 
     /* Find another LBA for that is empty for metadata */
     printf("- Looking for MetaData LBA\n");
     int j;
     for(j = 0; j < volume.blockCount; j++) {
-        if(volume.map[j] == 0) break;
+        if(getMap(j, volume) == '0') break;
     }
     printf("  - Empty LBA at: %d\n", j);
 
     /* mark LBA as used */
     printf("  - Marking LBA as used\n");
-    volume.map[j] = 1;
+    setMap(j, '1', volume);
 
     /* Get parent LBA position */
     printf("- Looking for parent folder\n");

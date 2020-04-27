@@ -113,7 +113,7 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
         LBAwrite(copyBuffer, 1, newBodyIndex);
 
         /* mark LBA as used */
-        volume.map[newBodyIndex] = 1;
+        setMap(newBodyIndex, '1', volume);
 
         /* update newFile child as newBodyIndex */
         if(addChild(newBodyIndex, newFileIndex, volume) == 0) {

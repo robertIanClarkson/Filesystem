@@ -208,7 +208,7 @@ void deleteLine(char* buffer, int lineStart, char initChar) {
 
 int getNextEmptyLBA(struct filesystem_volume volume) {
     for(int i = 0; i < volume.blockCount; i++) {
-        if(volume.map[i] == 0) return i;
+        if(getMap(i, volume) == '0') return i;
     }
     return -1;
 }

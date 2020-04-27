@@ -46,16 +46,16 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             for(int j = 48; j < volume.blockSize; j = j + 16) { // each line of file we are removing
                 if(getLine(buffer, indexOfBody, i) == 0) continue; // skip all empty lines
                 LBAwrite(cleanBuffer, 1, atoi(indexOfBody)); // re-initializing the body LBA
-                volume.map[atoi(indexOfBody)] = 0; // set body LBA to free
+                setMap(atoi(indexOfBody), '0', volume); // set body LBA to free
             }
             LBAwrite(cleanBuffer, 1, atoi(indexOfFile)); // re-initializing the file LBA
-            volume.map[atoi(indexOfFile)] = 0; // set file LBA to free
+            setMap(atoi(indexOfFile), '0', volume); // set file LBA to free
 
             LBAread(metaBuffer,1, (atoi(indexOfFile) + 1));
             initializeLBA(metaBuffer, '.', volume.blockSize); 
             LBAwrite(metaBuffer,1,(atoi(indexOfFile) + 1));
-            volume.map[atoi(indexOfFile)+1] = 0;
-            
+            setMap((atoi(indexOfFile)+1), '0', volume);
+
             free(buffer);
             free(cleanBuffer);
             free(indexOfFile);
