@@ -38,4 +38,9 @@ superclean!:
 	make clean
 	make cleanHex
 
+reopen:
+	./main volume 1048576 512
+	make cleanHex
+	make runHexdump
+
 
