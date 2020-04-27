@@ -42,13 +42,13 @@ int initMap(struct filesystem_volume volume) {
 
 int createRoot(struct filesystem_volume volume) {
     uint64_t result;
-    int rootIndex = 0;
-    int metaIndex = 1;
+    int rootIndex = volume.file_start;
+    int metaIndex = rootIndex + 1;
     /* Set first LBA as used */
-    volume.map[rootIndex] = 1; 
+    setMap(rootIndex, '1', volume); 
 
     /* Set metadata LBA as used */
-    volume.map[metaIndex] = 1;
+    setMap(metaIndex, '1', volume); 
 
     /* create buffer */
     char* buffer = malloc(volume.blockSize);
@@ -56,7 +56,7 @@ int createRoot(struct filesystem_volume volume) {
     if(addName("root", buffer) != 1) return 0; // check
     if(addType("folder", buffer) != 1) return 0; // check
     if(connectMetaData(metaIndex, buffer) != 1) return 0; // check
-    result = LBAwrite( buffer, 1, 0);
+    result = LBAwrite( buffer, 1, rootIndex);
     free(buffer);
     // need to add check
 
@@ -108,10 +108,10 @@ int main (int main_argc, char *main_argv[]) {
         }        
 
         /* Set root directory */
-        // if(createRoot(volume) != 1) {
-        //     printf("\t***FAILED TO CREATE ROOT***\n");
-        //     return EXIT_FAILURE; /* Set root directory */
-        // }
+        if(createRoot(volume) != 1) {
+            printf("\t***FAILED TO CREATE ROOT***\n");
+            return EXIT_FAILURE; /* Set root directory */
+        }
     } else if(volume.retVal == -1) {
         printf("\t- RESULT: file exists but can not open for write\n");
         // return EXIT_FAILURE;
