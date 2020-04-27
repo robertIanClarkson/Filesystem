@@ -3,6 +3,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <math.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include "../../structs.h"

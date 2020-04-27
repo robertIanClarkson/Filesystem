@@ -1,4 +1,3 @@
-#include <math.h>
 #include "special1.h"
 /* one to copy from the normal filesystem to your filesystem */
 /* command = "special1 sourceFile ourFileName ourFileDirectory" */
@@ -42,6 +41,9 @@ int special1(struct filesystem_volume volume, struct arguments command) {
         printf("***ERROR INDEX COULD NOT BE FOUND***");
         return 0;
     }
+
+    // absolute path of file should work with null terminator added
+    //strcat(sourceFile, '\0');
 
     // get filesize of linux file
     long int linuxFileSize = getFileSize(sourceFile);
