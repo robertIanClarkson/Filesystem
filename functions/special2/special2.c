@@ -36,12 +36,9 @@ int special2(struct filesystem_volume volume, struct arguments command) {
 	    i--;	
         } 
     }
-    printf("sourceFile: %s\n", sourceFile);
     strcat(linuxDestinationFile, sourceFile);
     strcat(linuxDestinationFile, ".txt");
     strcat(linuxDestinationFile, "\0");
-
-    printf("file path: %s\n", linuxDestinationFile);
 
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
@@ -55,7 +52,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     char* bodyBuffer = malloc(volume.blockSize);
     char* lineBuffer = malloc(16);
 
-    printf("buffers created\n");
+    printf("\t-buffers created\n");
    
     /* This was not a bad idea, but I dont think we need to get this information
     // get size of file from Filesystem
@@ -76,7 +73,9 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     free(sourceBuffer);
     free(bodyBuffer);
     free(lineBuffer);
+    printf("\t-Memory freed\n");
     fclose(fp);
+    printf("\t-File closed\n");
 
     printf("File successfully copied from Filesystem to LINUX\n");
     return 1;
