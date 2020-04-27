@@ -65,6 +65,7 @@ void deleteLine(char* buffer, int lineStart, char initChar);
 int getNextEmptyLBA(struct filesystem_volume volume);
 
 void setMap(int at, char ch, struct filesystem_volume volume);
+char getMap(int at, struct filesystem_volume volume);
 
 int LBAfreeCount(struct filesystem_volume volume);
 
