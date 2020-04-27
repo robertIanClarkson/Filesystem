@@ -38,7 +38,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     }
     strcat(linuxDestinationFile, sourceFile);
     strcat(linuxDestinationFile, ".txt");
-    strcat(linuxDestinationFile, "\0");
+    strcat(linuxDestinationFile, '\0');
 
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
