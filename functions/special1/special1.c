@@ -64,7 +64,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
         // read file into buffer
         initializeLBA(buffer, '-', volume.blockSize);
-        readNBytes(buffer, sourceFile, 0, volume.blockSize);
+        readNBytes(buffer, sourceFile, (i * volume.blockSize), volume.blockSize);
         LBAwrite(buffer, 1, emptyBlock);
 
         // add block to file
