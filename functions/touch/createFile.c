@@ -14,6 +14,15 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
 
     printf("Creating filename: %s in directory: %s\n", name, parent);
 
+    // Get parent LBA position
+    printf("- Looking for parent folder\n");
+    int parentIndex = getIndex(parent, volume);
+    if (parentIndex < 0) {
+        printf("***PARENT FOLDER DNE***\n");
+        return 0;
+    } 
+    printf("  - Found parent folder\n");
+
     // Find the first LBA that is empty 
     printf("- Looking for Index LBA\n");
     int i;
@@ -37,15 +46,6 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     // mark LBA as used 
     printf("  - Marking LBA as used\n");
     volume.map[j] = 1;
-
-    // Get parent LBA position
-    printf("- Looking for parent folder\n");
-    int parentIndex = getIndex(parent, volume);
-    if (parentIndex < 0) {
-        printf("***PARENT FOLDER DNE***\n");
-        return 0;
-    } 
-    printf("  - Found parent folder\n");
 
     // Create Index LBA 
     printf("- Creating Buffer\n");
