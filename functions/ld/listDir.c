@@ -33,6 +33,8 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
     for(int i = 48; i < volume.blockSize; i = i + 16) {
         if(getLine(parentBuffer, line, i) == 0) continue;
         foo = LBAread(childBuffer, 1, atoi(line));
+	memset(type,0,16);
+	memset(name,0,16);
         if(getType(childBuffer, type) == 0) {
             printf("***File has no type***\n");
             free(parentBuffer);
@@ -51,9 +53,16 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
             free(type);
             return 0;
         }
-        if(strcmp(type, "file") == 0) { // child is of type file
-            printf("- %s\n", name);   
-        }
+
+        if(strcmp(type, "file") == 0){
+		printf("- %s\n",name);
+	}
+ 	else if(strcmp(type, "folder") == 0){
+		printf("- %s\n",name);
+	}
+     	else if(strcmp(type, "fileer") == 0){
+	printf("- %s\n",name);
+	}
     }
 
     free(parentBuffer);
