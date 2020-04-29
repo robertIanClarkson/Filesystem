@@ -26,6 +26,12 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     // declare stat variable
     struct stat st; 
 
+    // check if linux file exists
+    if(stat(sourceFile, &st) != 0) {
+        printf("***ERROR LINUX FILE DNE***\n");
+        return 0;
+    }
+
     // a new File is created using the touch command, with the name and directory coming from args
     struct arguments newArgs;
     newArgs.argc = 3;
