@@ -2,25 +2,16 @@
 
 int setMetaData(struct filesystem_volume volume, struct arguments command) {
 
-    /* Filesystem $ set file folder category data
-                  $ touch test root
-                  $ set test root author stan
-    
-
-    1. find folder
-    2. find file
-    3. find metadata LBA
-    4. write command.args[3 & 4] to next empty lines in metadata block
-
-   */
-
     //CHECK ARG COUNT
    if(command.argc > 5){
-       printf("***TOO MANY ARGS***\n");
+       printf("***ERROR - TOO MANY ARGS***\n");
+       return 0;
    }
    else if (command.argc < 5){
-       printf("***TOO FEW ARGS***\n");
+       printf("***ERROR - TOO FEW ARGS***\n");
+       return 0;
    }
+
 
    //GET ARGS
     char* file = command.args[1];
@@ -29,81 +20,85 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
     char* data = command.args[4];
 
     if(strlen(type) > 16) {
-        printf("***METADATA TYPE TOO LONG***\n");
+        printf("***ERROR - METADATA TYPE TOO LONG***\n");
         return 0;
     }
-        if(strlen(type) > 16) {
-        printf("***METADATA DATA TOO LONG***\n");
+        if(strlen(data) > 16) {
+        printf("***ERROR - METADATA DATA TOO LONG***\n");
         return 0;
     }
+
 
     //GET FOLDER INDEX
-    printf("Getting folder '%s' index...\n",folder);
     int folderIndex = getIndex(folder, volume);
     if(folderIndex < 0) {
-        printf("***FOLDER DNE***\n");
+        printf("***ERROR - FOLDER NOT FOUND***\n");
         return 0;
     }
-    printf("folder index: %d\n", folderIndex);
+
 
     //GET FILE INDEX
+    char* folderBuffer = malloc(volume.blockSize);
+    int temp = LBAread(folderBuffer, 1, folderIndex);
 
-    int fileIndex = getIndex(file, volume);
-    printf("file index: %d\n", fileIndex);
-    
+    char* childBuffer = malloc(volume.blockSize);
+    char* name = malloc(16);
+    char* type2 = malloc(16);
+    char* fileIndex = malloc(16);
+    for(int i = 48; i < volume.blockSize; i = i + 16) { // looking at each child of parent LBA
+        if(getLine(folderBuffer, fileIndex, i) == 0) continue;
+        /* we have child index */
+        temp = LBAread(childBuffer, 1, atoi(fileIndex));
+        /* checkif childBuffer is a folder or file */
+        memset(type2, 0, 16);
+        memset(name, 0, 16);
+        getType(childBuffer, type2); // read the type from the childBuffer into "type"
+        if(strcmp(type2, "file") == 0) { // child is a file
+            getName(childBuffer, name); // read the type from the childBuffer into "type"
+            if(strcmp(name, file) == 0) { // THIS IS THE ONE WE WILL COPY 
+                break;
+            }
+        }
+    }
     if(fileIndex < 0) {
-        printf("***ERROR INDEX COULD NOT BE FOUND***");
+        printf("***ERROR - FILE NOT FOUND***\n");
         return 0;
     }
 
+
     //GET METADATA INDEX
-
-    int metadataIndex = fileIndex + 1;
-    printf("metadata index: %d\n", metadataIndex);
+    int metadataIndex = atoi(fileIndex) + 1;
 
 
-    //WRITE ARGS 3 & 4 TO SEPERATE LINES OF METADATA LBA
-    
+    //WRITE ARGS 3 & 4 TO SEPERATE LINES OF METADATA LBA    
     char* buffer = malloc(volume.blockSize); //to be written
     char* metadataBuffer = malloc(volume.blockSize); //MD block
 
     LBAread(metadataBuffer, 1, metadataIndex); //reads entire MD block
 
-    //printf("metadataBuffer: %s\n\n", metadataBuffer);
-
     strncat(buffer, metadataBuffer, 32); // copy header lines into buffer
 
-    // for(int test = 32; test < volume.blockSize + 32; test += 32) { printf("i = %d\n",test);}
-
     for(int i = 32; i < volume.blockSize; i += 32) { // search for first empty line
-
-        //printf("\n\nmetadataBuffer[i]: %c\n i = %d\n\n",metadataBuffer[i],i);
         if(metadataBuffer[i] == '*') {
-            printf("hello from first * line");
             strcat(buffer, type);
-            for(int j = 0; j < (16 - strlen(type));  j++) {
+            for(int j = 0; j < (16 - strlen(type));  j++) { //adding type to buffer string
                 strcat(buffer, "*"); }
-                //printf("\n\ntype-buffer: %s\n\n", buffer);
 
             strcat(buffer, data);
-            for(int k = 0; k < (16 - strlen(data));  k++) {
+            for(int k = 0; k < (16 - strlen(data));  k++) { //adding data to buffer string
                 strcat(buffer, "*"); }
-                //printf("\n\nname-buffer: %s\n\n", buffer);
 
-            for (int cursor = i + 32; cursor < volume.blockSize; cursor++){ //adding back metadata init char
-                strcat(buffer, "*");
-            }
-            //printf("\n\nfinal-buffer: %s\n\n", buffer);
+            for (int cursor = i + 32; cursor < volume.blockSize; cursor++){ //adding back metadata init char '*'
+                strcat(buffer, "*"); }
             break;
         }
-        else if(i == volume.blockSize - 32){
-            //printf("***METADATA BLOCK FULL***\n");
+        else if(i == volume.blockSize - 32){ //check if metadata is full
+            printf("***METADATA BLOCK FULL***\n");
             return 0;
         }
-        else{
+        else{ //clear misc char from buffer
             strncpy(buffer, "", volume.blockSize);
             strncat(buffer, metadataBuffer, (i + 32));
-            //printf("\n\nheader-buffer: %s\n\n", buffer);
         }
     }
 
