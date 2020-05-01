@@ -76,11 +76,11 @@
 #### (set meta data category 'author' to name 'foo' 'bar' in file 'hello' in directory 'world')
 #### Filesystem_Prompt$ set hello world author foo bar
 
-#### (copy actual file '/my/local/path/on/my/computer.txt' to project directory 'foo')
-#### Filesystem_Prompt$ cp_from /my/local/path/on/my/computer.txt foo
+#### (copy actual file '/my/local/path/on/my/computer.txt' to project directory 'root' as 'foo') --> try relative and full path
+#### Filesystem_Prompt$ special1 /my/local/path/on/my/computer.txt foo root
 
-#### (copy file 'foo' in directory 'bar' into '/my/local/path/on/my/computer/')
-#### Filesystem_Prompt$ cp_to foo bar /my/local/path/on/my/computer/
+#### (copy file 'foo' in directory 'bar' into '/my/local/path/on/my/computer/') --> try relative and full path
+#### Filesystem_Prompt$ special2 foo bar /my/local/path/on/my/computer/
 
 ## LBA structure (FOCUS ON RIGHT SIDE OF PRINT OUT)
 ### file
