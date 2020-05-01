@@ -67,7 +67,8 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     for(int i = 0; i < LBAcount; i++) {
         // get a free block
         emptyBlock = getNextEmptyLBA(volume);
-        volume.map[emptyBlock] = 1;
+        // volume.map[emptyBlock] = 1;
+        setMap(emptyBlock, '1', volume);
         printf("Empty LBA at: %d\n", emptyBlock);
 
         // read file into buffer

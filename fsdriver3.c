@@ -175,7 +175,6 @@ int main (int main_argc, char *main_argv[]) {
     } while(strcmp(command.opt, "exit") != 0);
 
     /* Close Partition */
-    free(volume.map);
     printf("\nClosing Partition\n");
     closePartitionSystem();
     printf("Closed  Partition\n");

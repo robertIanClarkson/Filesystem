@@ -16,7 +16,6 @@ struct filesystem_volume {
     uint64_t blockCount;
     uint64_t map_start;
     uint64_t file_start;
-    int* map;
     int retVal;
 };
 
