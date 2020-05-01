@@ -14,7 +14,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
 
     // check last character of path == '/'
     if(linuxDestinationFile[strlen(linuxDestinationFile)-1] != '/') {
-        printf("***ERROR PATH IS NOT VALID***");
+        printf("***ERROR PATH IS NOT VALID***\n");
         return 0;
     } 
 
@@ -31,14 +31,14 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     // get/check source file index, -1 doesnt exist
     int fileIndex = getIndex(sourceFile, volume);
     if(fileIndex < 1) {
-        printf("***ERROR FILE DNE***");
+        printf("***ERROR FILE DNE***\n");
         return 0;
     }
-
+1
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
     if(fp == NULL) 
-        printf("***ERROR FILE NOT FOUND***");
+        printf("***ERROR FILE NOT FOUND***\n");
 
     printf("File successfully opened\n");
 
