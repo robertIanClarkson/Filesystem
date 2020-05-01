@@ -44,7 +44,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             LBAwrite(buffer, 1, parentIndex); // update LBA
             LBAread(buffer, 1, atoi(indexOfFile)); // read index of file we want to delete
             for(int j = 48; j < volume.blockSize; j = j + 16) { // each line of file we are removing
-                if(getLine(buffer, indexOfBody, i) == 0) continue; // skip all empty lines
+                if(getLine(buffer, indexOfBody, j) == 0) continue; // skip all empty lines
                 LBAwrite(cleanBuffer, 1, atoi(indexOfBody)); // re-initializing the body LBA
                 setMap(atoi(indexOfBody), '0', volume); // set body LBA to free
             }
