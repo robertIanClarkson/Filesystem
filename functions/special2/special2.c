@@ -12,38 +12,32 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     char* sourceDirectory = command.args[2];
     char* linuxDestinationFile = command.args[3];
 
-    // get/check source file index, -1 doesnt exist
-    int fileIndex = getIndex(sourceFile, volume);
-    if(fileIndex < 1) {
-        printf("***ERROR FILE DOES NOT EXIST***");
-        return 0;
-    }
-
     // check last character of path == '/'
     if(linuxDestinationFile[strlen(linuxDestinationFile)-1] != '/') {
-        printf("***ERROR PATH IS NOT VALID***");
+        printf("***ERROR PATH IS NOT VALID\n***");
         return 0;
     } 
 
-    /* seems a little messy, might be a better way to trim '-' from fileName */
-    int len = strlen(sourceFile);   	
-    for(int i = 0; i < len; i++) {
-        if(sourceFile[i] == '-') {
-	    for(int j = i; j < len; j++) {
-		sourceFile[j] = sourceFile[j + 1];
-	    }
-	    len--;
-	    i--;	
-        } 
-    }
+    printf("sourceFile: %s\n", sourceFile);
+
     strcat(linuxDestinationFile, sourceFile);
-    strcat(linuxDestinationFile, ".txt");
-    strcat(linuxDestinationFile, '\0');
+    //strcat(linuxDestinationFile, ".txt");
+    strcat(linuxDestinationFile, "\0");
+
+    printf("file path: %s\n", linuxDestinationFile);
+
+    // get/check source file index, -1 doesnt exist
+    int fileIndex = getIndex(sourceFile, volume);
+    if(fileIndex < 1) {
+        printf("***ERROR FILE DOES NOT EXIST\n***");
+        return 0;
+    }
+
 
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
     if(fp == NULL) 
-        printf("***ERROR FILE NOT FOUND***");
+        printf("***ERROR FILE NOT FOUND***\n");
 
     printf("File successfully opened\n");
 
@@ -51,15 +45,6 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     char* sourceBuffer = malloc(volume.blockSize);
     char* bodyBuffer = malloc(volume.blockSize);
     char* lineBuffer = malloc(16);
-
-    printf("\t-buffers created\n");
-   
-    /* This was not a bad idea, but I dont think we need to get this information
-    // get size of file from Filesystem
-    long totalSize = getNumberOfBytes("/home/student/HelloWorld.txt");
-    int LBAcount = ceil(((double) totalSize) / ((double) volume.blockSize)); 
-    printf("Total LBA blocks of file: %d\n", LBAcount);
-    */
 
     // LBAread the total blocks of sourceFile
     LBAread(sourceBuffer, 1, fileIndex);
@@ -73,9 +58,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     free(sourceBuffer);
     free(bodyBuffer);
     free(lineBuffer);
-    printf("\t-Memory freed\n");
     fclose(fp);
-    printf("\t-File closed\n");
 
     printf("File successfully copied from Filesystem to LINUX\n");
     return 1;
