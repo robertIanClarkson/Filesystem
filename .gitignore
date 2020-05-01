@@ -4,3 +4,4 @@ volume
 hexdump_results.txt
 Filesystem.code-workspace
 .vscode/
+.DS_Store
