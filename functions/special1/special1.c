@@ -72,7 +72,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
         printf("Empty LBA at: %d\n", emptyBlock);
 
         // read file into buffer
-        initializeLBA(buffer, '-', volume.blockSize);
+        initializeLBA(buffer, '\0', volume.blockSize);
         readNBytes(buffer, sourceFile, (i * volume.blockSize), volume.blockSize);
         LBAwrite(buffer, 1, emptyBlock);
 
