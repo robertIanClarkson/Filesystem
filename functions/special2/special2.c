@@ -18,13 +18,13 @@ int special2(struct filesystem_volume volume, struct arguments command) {
         return 0;
     } 
 
-    printf("sourceFile: %s\n", sourceFile);
+    //printf("sourceFile: %s\n", sourceFile);
 
     strcat(linuxDestinationFile, sourceFile);
     //strcat(linuxDestinationFile, ".txt");
     strcat(linuxDestinationFile, "\0");
 
-    printf("file path: %s\n", linuxDestinationFile);
+    //printf("file path: %s\n", linuxDestinationFile);
 
     // get/check source file index, -1 doesnt exist
     int fileIndex = getIndex(sourceFile, volume);
