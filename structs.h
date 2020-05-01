@@ -72,4 +72,10 @@ char getMap(int at, struct filesystem_volume volume); // char
 
 int LBAfreeCount(struct filesystem_volume volume);
 
+long getFileSize(char *filename);
+
+void readNBytes(char* buffer, char* name, int startIndex, int readAmount);
+
+long getNumberOfBytes(const char *name);
+
 #endif /* stucts_h */

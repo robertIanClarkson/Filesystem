@@ -1,9 +1,14 @@
 #ifndef special1_h
 #define special1_h
 
+#include <unistd.h>
 #include <stdio.h>
+#include <math.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 #include "../../structs.h"
 #include "../../low/fsLow.h"
+#include "../touch/createFile.h"
 
 int special1(struct filesystem_volume volume, struct arguments command);
 

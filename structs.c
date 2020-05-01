@@ -247,3 +247,23 @@ int LBAfreeCount(struct filesystem_volume volume) {
     return sum;
 }
 
+long getFileSize(char *filename) {
+    struct stat st;
+    stat(filename, &st);
+    return st.st_size;
+}
+
+void readNBytes(char* buffer, char* name, int startIndex, int readAmount) {  
+    FILE* fp = fopen(name, "r");
+    fseek(fp, startIndex, SEEK_SET);
+    fread(buffer, readAmount, 1, fp);
+    fclose(fp);
+} 
+
+long getNumberOfBytes(const char *name) {  
+    FILE *fl = fopen(name, "r");  
+    fseek(fl, 0, SEEK_END);  
+    long len = ftell(fl);    
+    fclose(fl);  
+    return len;  
+}
