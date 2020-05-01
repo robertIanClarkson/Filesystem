@@ -2,9 +2,13 @@
 
 int removeFile(struct filesystem_volume volume, struct arguments command) {
     // Checking argc 
-    if(command.argc != 3) {
+    if(command.argc < 3) {
         printf("***Not Enough Args***\n");
         return 0; // check
+    }
+    else if(command.argc > 3){
+	printf("***TOO many Args***\n");
+	return 0; //check
     }
 
     // Get args 
@@ -20,13 +24,13 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     //initializeLBA(buffer, '.', volume.blockSize);
 
     // Get index of folder 
-    printf("- Looking for parent folder\n");
+    // printf("- Looking for parent folder\n");
     int parentIndex = getIndex(folder, volume);
     if (parentIndex < 0) {
         printf("***FOLDER DNE***\n");
         return 0;
     } 
-    printf("- Parent directory folder index: %d\n", parentIndex);
+    // printf("- Parent directory folder index: %d\n", parentIndex);
 
     char* buffer = malloc(volume.blockSize);
     int foo = LBAread( buffer, 1, parentIndex);

@@ -3,7 +3,7 @@
 int listDir(struct filesystem_volume volume, struct arguments command) {
 
     /* check if command.argc != 2 */
-        if(command.argc < 2) {
+    if(command.argc < 2) {
         printf("***Not Enough Args***\n");
         return 0; // check
     }
@@ -64,7 +64,7 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
     free(name);
     free(type);
 
-    printf("***COMPLETE***\n\n"); 
+    // printf("***COMPLETE***\n\n"); 
 
     return 1;
 }

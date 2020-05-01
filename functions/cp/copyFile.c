@@ -8,9 +8,13 @@
 int copyFile(struct filesystem_volume volume, struct arguments command) {
     
     /* Checking argc */
-    if(command.argc != 5) {
+    if(command.argc < 5) {
         printf("***Not Enough Args***\n");
         return 0; // check
+    }
+    else if(command.argc > 5){
+	printf("***TOO many Args***\n");
+	return 0; //check
     }
 
     /* Get args */
@@ -18,26 +22,31 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     char* oldFolder = command.args[2];
     char* newFile = command.args[3];
     char* newFolder = command.args[4];
-    printf("* copy file: %s\n", oldFile);
-    printf("* from folder: %s\n", oldFolder);
-    printf("* as file: %s\n", newFile);
-    printf("* to folder: %s\n", newFolder);
+    // printf("* copy file: %s\n", oldFile);
+    // printf("* from folder: %s\n", oldFolder);
+    // printf("* as file: %s\n", newFile);
+    // printf("* to folder: %s\n", newFolder);
+
+    printf("Source File: %s\n", oldFile);
+    printf("Source Directory: %s\n", oldFolder);
+    printf("New File: %s\n", newFile);
+    printf("Target Directory: %s\n", newFolder);
 
     /* Get index of 'keyFolder' */
-    printf("- Looking for old folder\n");
+    // printf("- Looking for old folder\n");
     int oldFolderIndex = getIndex(oldFolder, volume);
     if(oldFolderIndex < 0) {
         printf("***FOLDER DNE***\n");
         return 0;
     }
-    printf("- old folder index: %d\n", oldFolderIndex);
+    // printf("- old folder index: %d\n", oldFolderIndex);
 
     /* get old folder buffer */
     char* oldFolderBuffer = malloc(volume.blockSize);
     int foo = LBAread(oldFolderBuffer, 1, oldFolderIndex);
 
     /* init */
-    printf("- Getting buffer of \"%s\"\n", oldFile);
+    // printf("- Getting buffer of \"%s\"\n", oldFile);
     char* childBuffer = malloc(volume.blockSize);
     char* name = malloc(16);
     char* type = malloc(16);
@@ -139,7 +148,7 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     free(oldFileLine);
     free(oldFolderBuffer);
     
-    printf("***COMPLETE***\n\n");
+    // printf("***COMPLETE***\n\n");
 
     return 1;
 }

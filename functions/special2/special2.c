@@ -1,12 +1,15 @@
 #include "special2.h"
 /* from your filesystem to the normal filesystem */
 int special2(struct filesystem_volume volume, struct arguments command) {
-    // Checking argc 
-    if(command.argc != 4) {
+    /* check if command.argc != 4 */
+    if(command.argc < 4) {
         printf("***Not Enough Args***\n");
         return 0; // check
     }
-
+    else if(command.argc > 4) {
+	    printf("***TOO many Args***\n");
+	    return 0; //check
+    }
     // Get args 
     char* sourceFile = command.args[1];
     char* sourceDirectory = command.args[2];
@@ -39,7 +42,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     if(fp == NULL) 
         printf("***ERROR FILE NOT FOUND***\n");
 
-    printf("File successfully opened\n");
+    // printf("File successfully opened\n");
 
     // create buffers
     char* sourceBuffer = malloc(volume.blockSize);
@@ -60,7 +63,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     free(lineBuffer);
     fclose(fp);
 
-    printf("File successfully copied from Filesystem to LINUX\n");
+    // printf("File successfully copied from Filesystem to LINUX\n");
     return 1;
 }
 

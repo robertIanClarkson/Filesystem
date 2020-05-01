@@ -3,9 +3,13 @@
 int moveFile(struct filesystem_volume volume, struct arguments command) {
     
     /* Checking argc */
-    if (command.argc != 5) {
+    if(command.argc < 5) {
         printf("***Not Enough Args***\n");
         return 0; // check
+    }
+    else if(command.argc > 5){
+	printf("***TOO many Args***\n");
+	return 0; //check
     }
 
     /* copy file */

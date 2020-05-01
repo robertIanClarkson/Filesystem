@@ -53,11 +53,11 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     // get filesize of linux file
     long int linuxFileSize = getFileSize(sourceFile);
-    printf("Linux FileSize: %ld\n", linuxFileSize);
+    // printf("Linux FileSize: %ld\n", linuxFileSize);
 
     // get number of LBA we will need
     int LBAcount = ceil(((double) linuxFileSize) / ((double) volume.blockSize));
-    printf("Number of LBAs we need: %d\n", LBAcount);
+    // printf("Number of LBAs we need: %d\n", LBAcount);
    
     // main logic loop 
     int emptyBlock;
@@ -69,7 +69,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
         emptyBlock = getNextEmptyLBA(volume);
         // volume.map[emptyBlock] = 1;
         setMap(emptyBlock, '1', volume);
-        printf("Empty LBA at: %d\n", emptyBlock);
+        // printf("Empty LBA at: %d\n", emptyBlock);
 
         // read file into buffer
         initializeLBA(buffer, '\0', volume.blockSize);
@@ -78,11 +78,11 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
         // add block to file
         addChild(emptyBlock, fileIndex, volume);
-        printf("Add Child at %d to file at %d\n", emptyBlock, fileIndex);
+        // printf("Add Child at %d to file at %d\n", emptyBlock, fileIndex);
 
     }
 
-    printf("File successfully copied from LINUX to Filesystem\n");
+    // printf("File successfully copied from LINUX to Filesystem\n");
     return 1;
 }
 
