@@ -62,4 +62,10 @@ void deleteLine(char* buffer, int lineStart, char initChar);
 /* returns the next empty index in volume.map[index] */
 int getNextEmptyLBA(struct filesystem_volume volume);
 
+long getFileSize(char *filename);
+
+void readNBytes(char* buffer, char* name, int startIndex, int readAmount);
+
+long getNumberOfBytes(const char *name);
+
 #endif /* stucts_h */

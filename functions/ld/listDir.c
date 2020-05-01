@@ -53,10 +53,9 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
             free(type);
             return 0;
         }
-
-        if(strcmp(type, "file") == 0){
-		    printf("- %s\n",name);
-	    }
+        if(strcmp(type, "file") == 0) { // child is of type file
+            printf("- %s\n", name);   
+        }
     }
 
     free(parentBuffer);

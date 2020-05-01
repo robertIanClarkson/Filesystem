@@ -15,6 +15,8 @@
 #include "./functions/rm/removeFile.h" /* (removeFile) */
 #include "./functions/set/setMetaData.h" /* (setMetaData) */
 #include "./functions/touch/createFile.h" /* (createFile) */
+#include "./functions/special1/special1.h" /* (special1) */
+#include "./functions/special2/special2.h" /* (special2) */
 
 int createRoot(struct filesystem_volume volume) {
     uint64_t result;
@@ -117,9 +119,9 @@ int main (int main_argc, char *main_argv[]) {
         } else if(strcmp(command.opt, "set") == 0) {
             success = setMetaData(volume, command);
         } else if(strcmp(command.opt, "special1") == 0) {
-            // success = special1(volume, command);
+            success = special1(volume, command); /* command = "special1 sourceFile ourFileName ourFileDirectory" */
         } else if(strcmp(command.opt, "special2") == 0) {
-            // success = special2(volume, command);
+            // success = special2(volume, command); /* command = "special2 sourceFile linuxDestinationFile" */
         } else if(strcmp(command.opt, "help") == 0) {
             printf("\tlist all directories = ld\n");
             printf("\tmake a directory = mkdir\n");
