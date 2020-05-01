@@ -121,7 +121,7 @@ int main (int main_argc, char *main_argv[]) {
         } else if(strcmp(command.opt, "special1") == 0) {
             success = special1(volume, command); /* command = "special1 sourceFile ourFileName ourFileDirectory" */
         } else if(strcmp(command.opt, "special2") == 0) {
-            // success = special2(volume, command); /* command = "special2 sourceFile linuxDestinationFile" */
+            success = special2(volume, command); /* command = "special2 sourceFile linuxDestinationFile" */
         } else if(strcmp(command.opt, "help") == 0) {
             printf("\tlist all directories = ld\n");
             printf("\tmake a directory = mkdir\n");

@@ -232,4 +232,4 @@ long getNumberOfBytes(const char *name) {
     long len = ftell(fl);    
     fclose(fl);  
     return len;  
-} 
+}
