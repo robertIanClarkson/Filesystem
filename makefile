@@ -22,6 +22,10 @@ run:
 	make ourDriver
 	./main volume 1048576 512
 
+runSuper!:
+	make ourDriver
+	./main volume 8388608 4096
+
 runLow:
 	make lowDriver
 	./main volume 1048576 512
@@ -30,11 +34,15 @@ runHexdump:
 	make hexdump
 	(./hex volume) >> hexdump_results.txt 
 
-bang!:
+bang:
 	make run
 	make runHexdump
 
-superclean!:
+bangBang:
+	make runSuper!
+	make runHexdump
+
+superclean:
 	make clean
 	make cleanHex
 
