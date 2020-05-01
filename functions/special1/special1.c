@@ -18,6 +18,10 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     char* sourceFile = command.args[1];
     char* ourFileName = command.args[2];
     char* ourFileDirectory = command.args[3];
+	
+    printf("Source File: %s\n", sourceFile);
+    printf("Name of File: %s\n", ourFileName);
+    printf("Name of Directory: %s\n", ourFileDirectory);
 
     // how many blocks the file is 
     int totalSize;

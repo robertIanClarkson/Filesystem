@@ -16,6 +16,9 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     //int filesize = atoll (command.args[2]); // size in LBAs
     char* parent = command.args[2]; // the parent is the directory folder
 
+    printf("File name: %s\n", name);
+    printf("Target Directory: %s\n", parent);
+
     printf("Creating filename: %s in directory: %s\n", name, parent);
 
     // Get parent LBA position

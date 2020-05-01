@@ -20,6 +20,9 @@ int special2(struct filesystem_volume volume, struct arguments command) {
         printf("***ERROR PATH IS NOT VALID***\n");
         return 0;
     } 
+    printf("Source File: %s\n", sourceFile);
+    printf("Name of File to linux: %s\n", linuxDestinationFile);
+    printf("Name of Directory: %s\n", sourceDirectory);
 
     //printf("sourceFile: %s\n", sourceFile);
 
