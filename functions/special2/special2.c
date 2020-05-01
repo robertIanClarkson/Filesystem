@@ -34,7 +34,6 @@ int special2(struct filesystem_volume volume, struct arguments command) {
         printf("***ERROR FILE DNE***\n");
         return 0;
     }
-1
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
     if(fp == NULL) 
