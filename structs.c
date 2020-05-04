@@ -132,7 +132,7 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
     for(i = lineStart; i < volume.blockSize; i = i + 16) {
         /* find an empty line to add child index */
         if(buffer[i] == '-') {
-            printf("  - addChild at index: %d\n", i);
+            //printf("  - addChild at index: %d\n", i);
             break;
         }
     }
