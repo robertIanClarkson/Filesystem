@@ -4,18 +4,18 @@
 int createDir(struct filesystem_volume volume, struct arguments command) {
     /* Checking argc */
     if(command.argc < 3) {
-        printf("***Not Enough Args***\n");
+        printf("\t***Not Enough Args***\n");
         return 0; // check
     }
     else if(command.argc > 3){
-	printf("***TOO many Args***\n");
+	printf("\t***TOO many Args***\n");
 	return 0; //check
     }
     /* Get args */
     char* name     = command.args[1];
     char* parent   = command.args[2];
-    printf("New Folder: %s\n", name);
-    printf("In Folder: %s\n", parent);
+    printf("\tNew Folder: %s\n", name);
+    printf("\tIn Folder: %s\n", parent);
 
     /* Find the first LBA that is empty */
     // printf("- Looking for Index LBA\n");
@@ -45,7 +45,7 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     // printf("- Looking for parent folder\n");
     int parentIndex = getIndex(parent, volume);
     if(parentIndex < 0) {
-        printf("***PARENT FOLDER DNE***\n");
+        printf("\t***PARENT FOLDER DNE***\n");
         return 0;
     }
     // printf("  - Found parent folder\n");

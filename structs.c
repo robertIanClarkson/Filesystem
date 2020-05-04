@@ -105,7 +105,7 @@ int connectMetaData(int index, char* buffer) {
 
     /* make sure length is less than 17 chars long */
     if(len > 16){
-        printf("***Metadata index too large (is > than 16 digits)***\n");
+        printf("\t***Metadata index too large (is > than 16 digits)***\n");
         free(str);
         return 0;
     }
@@ -143,7 +143,7 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
     int len = strlen(str);
 
     if(len > 16){ // check
-        printf("***Child index too large (is > than 16 digits)***\n");
+        printf("\t***Child index too large (is > than 16 digits)***\n");
         free(buffer);
         free(str);
         return 0;

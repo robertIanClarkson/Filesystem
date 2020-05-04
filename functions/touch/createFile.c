@@ -3,11 +3,11 @@
 int createFile(struct filesystem_volume volume, struct arguments command) {
     // Checking argc 
     if(command.argc < 3) {
-        printf("***Not Enough Args***\n");
+        printf("\t***Not Enough Args***\n");
         return 0; // check
     }
     else if(command.argc > 3){
-	printf("***TOO many Args***\n");
+	printf("\t***TOO many Args***\n");
 	return 0; //check
     }
 
@@ -15,17 +15,17 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     char* name = command.args[1];
     //int filesize = atoll (command.args[2]); // size in LBAs
     char* parent = command.args[2]; // the parent is the directory folder
+    //printf(%-10s : %-10s)
+    printf("\tFile name: %s\n", name);
+    printf("\tTarget Directory: %s\n", parent);
 
-    printf("File name: %s\n", name);
-    printf("Target Directory: %s\n", parent);
-
-    printf("Creating filename: %s in directory: %s\n", name, parent);
+    printf("\tCreating filename: %s in directory: %s\n", name, parent);
 
     // Get parent LBA position
     // printf("- Looking for parent folder\n");
     int parentIndex = getIndex(parent, volume);
     if (parentIndex < 0) {
-        printf("***PARENT FOLDER DNE***\n");
+        printf("\t***PARENT FOLDER DNE***\n");
         return 0;
     } 
     // printf("  - Found parent folder\n");

@@ -7,11 +7,11 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     /* check if command.argc != 4 */
     if(command.argc < 4) {
-        printf("***Not Enough Args***\n");
+        printf("\t***Not Enough Args***\n");
         return 0; // check
     }
     else if(command.argc > 4) {
-	    printf("***TOO many Args***\n");
+	    printf("\t***TOO many Args***\n");
 	    return 0; //check
     }
 
@@ -19,9 +19,9 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     char* ourFileName = command.args[2];
     char* ourFileDirectory = command.args[3];
 	
-    printf("Source File: %s\n", sourceFile);
-    printf("Name of File: %s\n", ourFileName);
-    printf("Name of Directory: %s\n", ourFileDirectory);
+    printf("\tSource File: %s\n", sourceFile);
+    printf("\tName of File: %s\n", ourFileName);
+    printf("\tName of Directory: %s\n", ourFileDirectory);
 
     // how many blocks the file is 
     int totalSize;
@@ -32,7 +32,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     // check if linux file exists
     if(stat(sourceFile, &st) != 0) {
-        printf("***ERROR LINUX FILE DNE***\n");
+        printf("\t***ERROR LINUX FILE DNE***\n");
         return 0;
     }
 
@@ -43,12 +43,12 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     strcpy(newArgs.args[1], ourFileName);
     strcpy(newArgs.args[2], ourFileDirectory);
     if(createFile(volume, newArgs) == 0)
-        printf("***FAILED TO CREATE NEW FILE***\n");
+        printf("\t***FAILED TO CREATE NEW FILE***\n");
 
     // get index of new file created
     int fileIndex = getIndex(ourFileName, volume);
     if(fileIndex < 0) {
-        printf("***ERROR INDEX COULD NOT BE FOUND***");
+        printf("\t***ERROR INDEX COULD NOT BE FOUND***");
         return 0;
     }
 

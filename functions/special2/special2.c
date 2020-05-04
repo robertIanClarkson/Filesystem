@@ -3,11 +3,11 @@
 int special2(struct filesystem_volume volume, struct arguments command) {
     /* check if command.argc != 4 */
     if(command.argc < 4) {
-        printf("***Not Enough Args***\n");
+        printf("\t***Not Enough Args***\n");
         return 0; // check
     }
     else if(command.argc > 4) {
-	    printf("***TOO many Args***\n");
+	    printf("\t***TOO many Args***\n");
 	    return 0; //check
     }
     // Get args 
@@ -17,12 +17,12 @@ int special2(struct filesystem_volume volume, struct arguments command) {
 
     // check last character of path == '/'
     if(linuxDestinationFile[strlen(linuxDestinationFile)-1] != '/') {
-        printf("***ERROR PATH IS NOT VALID***\n");
+        printf("\t***ERROR PATH IS NOT VALID***\n");
         return 0;
     } 
-    printf("Source File: %s\n", sourceFile);
-    printf("Name of File to linux: %s\n", linuxDestinationFile);
-    printf("Name of Directory: %s\n", sourceDirectory);
+    printf("\tSource File: %s\n", sourceFile);
+    printf("\tName of File to linux: %s\n", linuxDestinationFile);
+    printf("\tName of Directory: %s\n", sourceDirectory);
 
     //printf("sourceFile: %s\n", sourceFile);
 
@@ -35,7 +35,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     // get/check source file index, -1 doesnt exist
     int fileIndex = getIndex(sourceFile, volume);
     if(fileIndex < 1) {
-        printf("***ERROR FILE DOES NOT EXIST***\n");
+        printf("\t***ERROR FILE DOES NOT EXIST***\n");
         return 0;
     }
 
@@ -43,7 +43,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
     if(fp == NULL) 
-        printf("***ERROR FILE NOT FOUND***\n");
+        printf("\t***ERROR FILE NOT FOUND***\n");
 
     // printf("File successfully opened\n");
 

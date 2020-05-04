@@ -9,11 +9,11 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     
     /* Checking argc */
     if(command.argc < 5) {
-        printf("***Not Enough Args***\n");
+        printf("\t***Not Enough Args***\n");
         return 0; // check
     }
     else if(command.argc > 5){
-	printf("***TOO many Args***\n");
+	printf("\t***TOO many Args***\n");
 	return 0; //check
     }
 
@@ -27,16 +27,16 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     // printf("* as file: %s\n", newFile);
     // printf("* to folder: %s\n", newFolder);
 
-    printf("Source File: %s\n", oldFile);
-    printf("Source Directory: %s\n", oldFolder);
-    printf("New File: %s\n", newFile);
-    printf("Target Directory: %s\n", newFolder);
+    printf("\tSource File: %s\n", oldFile);
+    printf("\tSource Directory: %s\n", oldFolder);
+    printf("\tNew File: %s\n", newFile);
+    printf("\tTarget Directory: %s\n", newFolder);
 
     /* Get index of 'keyFolder' */
     // printf("- Looking for old folder\n");
     int oldFolderIndex = getIndex(oldFolder, volume);
     if(oldFolderIndex < 0) {
-        printf("***FOLDER DNE***\n");
+        printf("\t***FOLDER DNE***\n");
         return 0;
     }
     // printf("- old folder index: %d\n", oldFolderIndex);
@@ -75,7 +75,7 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     strcpy(newArgs.args[1], newFile);
     strcpy(newArgs.args[2], newFolder);
     if(createFile(volume, newArgs) == 0) {
-        printf("***FAILED TO CREATE NEW FILE***\n");
+        printf("\t***FAILED TO CREATE NEW FILE***\n");
         free(name);
         free(type);
         free(childBuffer);
