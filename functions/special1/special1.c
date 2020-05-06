@@ -82,6 +82,22 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     }
 
+    // a new File is created using the set command, with the name, directory, and totalSize coming from args
+    char totalSizeBuffer[linuxFileSize];
+    sprintf(totalSizeBuffer, "%ld", linuxFileSize);
+    printf("Size of file: %s\n", totalSizeBuffer);
+    struct arguments newArgs2;
+    newArgs2.argc = 5;
+    strcpy(newArgs2.args[0], "set");
+    strcpy(newArgs2.args[1], ourFileName);
+    strcpy(newArgs2.args[2], ourFileDirectory);
+    strcpy(newArgs2.args[3], "Total Size");
+    strcpy(newArgs2.args[4], totalSizeBuffer);
+    if(setMetaData(volume, newArgs2) == 0)
+        printf("***FAILED TO SET METADATA***\n");
+
+    free(buffer);
+
     printf("File successfully copied from LINUX to Filesystem\n");
     return 1;
 }
