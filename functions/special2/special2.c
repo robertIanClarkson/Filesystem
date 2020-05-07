@@ -18,7 +18,7 @@ int special2(struct filesystem_volume volume, struct arguments command) {
         return 0;
     } 
 
-    //printf("sourceFile: %s\n", sourceFile);
+    printf("sourceFile: %s\n", sourceFile);
 
     strcat(linuxDestinationFile, sourceFile);
     //strcat(linuxDestinationFile, ".txt");
@@ -42,22 +42,53 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     printf("File successfully opened\n");
 
     // create buffers
+    char* metadataBuffer = malloc(volume.blockSize);
     char* sourceBuffer = malloc(volume.blockSize);
-    char* bodyBuffer = malloc(volume.blockSize);
+    char* bodyBuffer = malloc(volume.volumeSize);
+    char* bufferWithoutTrail = malloc(volume.volumeSize);
     char* lineBuffer = malloc(16);
+    char* totalBytes = malloc(16);
 
-    // LBAread the total blocks of sourceFile
+    int metadataIndex = fileIndex + 1;
+    LBAread(metadataBuffer, 1, metadataIndex); 
+
+    for(int i = 32; i < volume.blockSize; i += 32) {
+	if(metadataBuffer[i] == '^') {
+	    int j = i + 16;  
+            int temp = 0;
+	    while (metadataBuffer[j] != '*') {
+		totalBytes[temp] = metadataBuffer[j];
+		temp++;
+		j++;
+	    }
+            break;
+	}
+    }
+    free(metadataBuffer);
+
     LBAread(sourceBuffer, 1, fileIndex);
+    int totalSize = atoi(totalBytes);
+    printf("totalSize: %d\n", totalSize);
+    int totalLBA = (totalSize/volume.blockSize)+1;
+
+    printf("totalLBA: %d\n", totalLBA);
 
     for(int i=48; i<volume.blockSize; i=i+16) {
         if(getLine(sourceBuffer, lineBuffer, i) == 0) continue;
-        LBAread(bodyBuffer, 1, atoi(lineBuffer));
-        fputs(bodyBuffer, fp);
+           LBAread(bodyBuffer, totalLBA, atoi(lineBuffer));
+           //printf("bodyBuffer: %s\n", bodyBuffer); 
+           strncpy(bufferWithoutTrail,bodyBuffer,totalSize);
+           printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
+           //bufferWithoutTrail[sizeof bufferWithoutTrail] = '\0';
+           fputs(bufferWithoutTrail, fp);
+           break;
     }
     
     free(sourceBuffer);
     free(bodyBuffer);
+    free(bufferWithoutTrail);
     free(lineBuffer);
+    free(totalBytes);
     fclose(fp);
 
     printf("File successfully copied from Filesystem to LINUX\n");
