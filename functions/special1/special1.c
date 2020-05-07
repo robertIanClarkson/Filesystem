@@ -91,7 +91,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     strcpy(newArgs2.args[0], "set");
     strcpy(newArgs2.args[1], ourFileName);
     strcpy(newArgs2.args[2], ourFileDirectory);
-    strcpy(newArgs2.args[3], "Total Size");
+    strcpy(newArgs2.args[3], "^Total Size");
     strcpy(newArgs2.args[4], totalSizeBuffer);
     if(setMetaData(volume, newArgs2) == 0)
         printf("***FAILED TO SET METADATA***\n");
