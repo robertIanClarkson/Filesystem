@@ -96,21 +96,18 @@ int special2(struct filesystem_volume volume, struct arguments command) {
 }
 
 /*
-copy file 'foo' in directory 'bar' into '/my/local/path/on/my/computer/')
-Filesystem_Prompt$ cp_to foo root /my/local/path/on/my/computer/
- /my/local/path/on/my/computer/foo
- ***Complete***
+check if linux destination is valid
+check if 'volume' file exist
+read 'volume' file into buffer
+get metadata location from buffer
+open metadata file into metaBuffer
+read each 'title' line from metaBuffer (line 3, 5, 7, ..., < blockSize)
+if title of line X == "size" then (fileSize = line(X+1))
 
-1. get/check source file index (22 or -1 --> doesnt exist) -done
-2. check if PATH is valid (I think C has an isValidPath(linuxDestinationFile)) -done
-   - need to check last character of path == '/'--> if != '/' then ERROR, return 0
-3. get fp going with complete path --> fp = open("/my/local/path/on/my/computer/" + "foo", "w+");
-4. LBAread(sourceBuffer, sourceFileIndex)
-5. foreach(body line) --> i = i + 16
-        LBAread(bodyBuffer, line) --> body bytes
-        fp.append(bodyBuffer)
-6. fp.close()
-7. return 1
-    
-
+now just use the special2 logic we originally had except incorporate this logic...
+extraBytes = fileSize % blockSize;
+if(extrabytes == 0) then we just need to read (fileSize / blockSize) LBAsto fp.
+else read (fileSize / blocksize) to fp then read extraBytes amount from last block to fp.
+free everything up!
+Hope this helps!
 */
