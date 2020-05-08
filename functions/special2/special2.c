@@ -24,11 +24,41 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     //strcat(linuxDestinationFile, ".txt");
     strcat(linuxDestinationFile, "\0");
 
+    //GET FOLDER INDEX
+    int folderIndex = getIndex(sourceDirectory, volume);
+    if(folderIndex < 0) {
+        printf("***ERROR - FOLDER NOT FOUND***\n");
+        return 0;
+    }
+
     //printf("file path: %s\n", linuxDestinationFile);
+    //GET FILE INDEX
+    char* folderBuffer = malloc(volume.blockSize);
+    int temp = LBAread(folderBuffer, 1, folderIndex);
+
+    char* childBuffer = malloc(volume.blockSize);
+    char* name = malloc(16);
+    char* type2 = malloc(16);
+    char* fileIndex = malloc(16);
+    for(int i = 48; i < volume.blockSize; i = i + 16) { // looking at each child of parent LBA
+        if(getLine(folderBuffer, fileIndex, i) == 0) continue;
+        /* we have child index */
+        temp = LBAread(childBuffer, 1, atoi(fileIndex));
+        /* checkif childBuffer is a folder or file */
+        memset(type2, 0, 16);
+        memset(name, 0, 16);
+        getType(childBuffer, type2); // read the type from the childBuffer into "type"
+        if(strcmp(type2, "file") == 0) { // child is a file
+            getName(childBuffer, name); // read the type from the childBuffer into "type"
+            if(strcmp(name, sourceFile) == 0) { // THIS IS THE ONE WE WILL COPY 
+                break;
+            }
+        }
+    }
 
     // get/check source file index, -1 doesnt exist
-    int fileIndex = getIndex(sourceFile, volume);
-    if(fileIndex < 1) {
+    //int fileIndex = getIndex(sourceFile, volume);
+    if(fileIndex < 0) {
         printf("***ERROR FILE DOES NOT EXIST***\n");
         return 0;
     }
@@ -43,13 +73,12 @@ int special2(struct filesystem_volume volume, struct arguments command) {
 
     // create buffers
     char* metadataBuffer = malloc(volume.blockSize);
-    char* sourceBuffer = malloc(volume.blockSize);
     char* bodyBuffer = malloc(volume.volumeSize);
     char* bufferWithoutTrail = malloc(volume.volumeSize);
     char* lineBuffer = malloc(16);
     char* totalBytes = malloc(16);
 
-    int metadataIndex = fileIndex + 1;
+    int metadataIndex = atoi(fileIndex) + 1;
     LBAread(metadataBuffer, 1, metadataIndex); 
 
     for(int i = 32; i < volume.blockSize; i += 32) {
@@ -57,34 +86,26 @@ int special2(struct filesystem_volume volume, struct arguments command) {
 	    int j = i + 16;  
             int temp = 0;
 	    while (metadataBuffer[j] != '*') {
-		totalBytes[temp] = metadataBuffer[j];
-		temp++;
-		j++;
+		    totalBytes[temp] = metadataBuffer[j];
+		    temp++;
+		    j++;
 	    }
-            break;
+        break;
 	}
     }
     free(metadataBuffer);
 
-    LBAread(sourceBuffer, 1, fileIndex);
     int totalSize = atoi(totalBytes);
     printf("totalSize: %d\n", totalSize);
     int totalLBA = (totalSize/volume.blockSize)+1;
-
     printf("totalLBA: %d\n", totalLBA);
 
-    for(int i=48; i<volume.blockSize; i=i+16) {
-        if(getLine(sourceBuffer, lineBuffer, i) == 0) continue;
-           LBAread(bodyBuffer, totalLBA, atoi(lineBuffer));
-           //printf("bodyBuffer: %s\n", bodyBuffer); 
-           strncpy(bufferWithoutTrail,bodyBuffer,totalSize);
-           printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
-           //bufferWithoutTrail[sizeof bufferWithoutTrail] = '\0';
-           fputs(bufferWithoutTrail, fp);
-           break;
-    }
+    LBAread(bodyBuffer, totalLBA, atoi(fileIndex)+2);
+    printf("bodyBuffer: %s\n", bodyBuffer); 
+    strncpy(bufferWithoutTrail,bodyBuffer,totalSize);
+    printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
+    fputs(bufferWithoutTrail, fp);
     
-    free(sourceBuffer);
     free(bodyBuffer);
     free(bufferWithoutTrail);
     free(lineBuffer);
@@ -95,19 +116,4 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     return 1;
 }
 
-/*
-check if linux destination is valid
-check if 'volume' file exist
-read 'volume' file into buffer
-get metadata location from buffer
-open metadata file into metaBuffer
-read each 'title' line from metaBuffer (line 3, 5, 7, ..., < blockSize)
-if title of line X == "size" then (fileSize = line(X+1))
 
-now just use the special2 logic we originally had except incorporate this logic...
-extraBytes = fileSize % blockSize;
-if(extrabytes == 0) then we just need to read (fileSize / blockSize) LBAsto fp.
-else read (fileSize / blocksize) to fp then read extraBytes amount from last block to fp.
-free everything up!
-Hope this helps!
-*/
