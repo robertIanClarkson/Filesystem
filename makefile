@@ -51,4 +51,8 @@ reopen:
 	make cleanHex
 	make runHexdump
 
+reopen-big:
+	./main volume 8388608 4096
+	make cleanHex
+	make runHexdump
 
