@@ -24,18 +24,48 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     printf("\tName of File to linux: %s\n", linuxDestinationFile);
     printf("\tName of Directory: %s\n", sourceDirectory);
 
-    //printf("sourceFile: %s\n", sourceFile);
+    printf("sourceFile: %s\n", sourceFile);
 
     strcat(linuxDestinationFile, sourceFile);
     //strcat(linuxDestinationFile, ".txt");
     strcat(linuxDestinationFile, "\0");
 
+    //GET FOLDER INDEX
+    int folderIndex = getIndex(sourceDirectory, volume);
+    if(folderIndex < 0) {
+        printf("***ERROR - FOLDER NOT FOUND***\n");
+        return 0;
+    }
+
     //printf("file path: %s\n", linuxDestinationFile);
+    //GET FILE INDEX
+    char* folderBuffer = malloc(volume.blockSize);
+    int temp = LBAread(folderBuffer, 1, folderIndex);
+
+    char* childBuffer = malloc(volume.blockSize);
+    char* name = malloc(16);
+    char* type2 = malloc(16);
+    char* fileIndex = malloc(16);
+    for(int i = 48; i < volume.blockSize; i = i + 16) { // looking at each child of parent LBA
+        if(getLine(folderBuffer, fileIndex, i) == 0) continue;
+        /* we have child index */
+        temp = LBAread(childBuffer, 1, atoi(fileIndex));
+        /* checkif childBuffer is a folder or file */
+        memset(type2, 0, 16);
+        memset(name, 0, 16);
+        getType(childBuffer, type2); // read the type from the childBuffer into "type"
+        if(strcmp(type2, "file") == 0) { // child is a file
+            getName(childBuffer, name); // read the type from the childBuffer into "type"
+            if(strcmp(name, sourceFile) == 0) { // THIS IS THE ONE WE WILL COPY 
+                break;
+            }
+        }
+    }
 
     // get/check source file index, -1 doesnt exist
-    int fileIndex = getIndex(sourceFile, volume);
-    if(fileIndex < 1) {
-        printf("\t***ERROR FILE DOES NOT EXIST***\n");
+    //int fileIndex = getIndex(sourceFile, volume);
+    if(fileIndex < 0) {
+        printf("***ERROR FILE DOES NOT EXIST***\n");
         return 0;
     }
 
@@ -48,44 +78,48 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     // printf("File successfully opened\n");
 
     // create buffers
-    char* sourceBuffer = malloc(volume.blockSize);
-    char* bodyBuffer = malloc(volume.blockSize);
+    char* metadataBuffer = malloc(volume.blockSize);
+    char* bodyBuffer = malloc(volume.volumeSize);
+    char* bufferWithoutTrail = malloc(volume.volumeSize);
     char* lineBuffer = malloc(16);
+    char* totalBytes = malloc(16);
 
-    // LBAread the total blocks of sourceFile
-    LBAread(sourceBuffer, 1, fileIndex);
+    int metadataIndex = atoi(fileIndex) + 1;
+    LBAread(metadataBuffer, 1, metadataIndex); 
 
-    for(int i=48; i<volume.blockSize; i=i+16) {
-        if(getLine(sourceBuffer, lineBuffer, i) == 0) continue;
-        LBAread(bodyBuffer, 1, atoi(lineBuffer));
-        fputs(bodyBuffer, fp);
+    for(int i = 32; i < volume.blockSize; i += 32) {
+	if(metadataBuffer[i] == '^') {
+	    int j = i + 16;  
+            int temp = 0;
+	    while (metadataBuffer[j] != '*') {
+		    totalBytes[temp] = metadataBuffer[j];
+		    temp++;
+		    j++;
+	    }
+        break;
+	}
     }
+    free(metadataBuffer);
+
+    int totalSize = atoi(totalBytes);
+    printf("totalSize: %d\n", totalSize);
+    int totalLBA = (totalSize/volume.blockSize)+1;
+    printf("totalLBA: %d\n", totalLBA);
+
+    LBAread(bodyBuffer, totalLBA, atoi(fileIndex)+2);
+    printf("bodyBuffer: %s\n", bodyBuffer); 
+    strncpy(bufferWithoutTrail,bodyBuffer,totalSize);
+    printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
+    fputs(bufferWithoutTrail, fp);
     
-    free(sourceBuffer);
     free(bodyBuffer);
+    free(bufferWithoutTrail);
     free(lineBuffer);
+    free(totalBytes);
     fclose(fp);
 
     // printf("File successfully copied from Filesystem to LINUX\n");
     return 1;
 }
 
-/*
-copy file 'foo' in directory 'bar' into '/my/local/path/on/my/computer/')
-Filesystem_Prompt$ cp_to foo root /my/local/path/on/my/computer/
- /my/local/path/on/my/computer/foo
- ***Complete***
 
-1. get/check source file index (22 or -1 --> doesnt exist) -done
-2. check if PATH is valid (I think C has an isValidPath(linuxDestinationFile)) -done
-   - need to check last character of path == '/'--> if != '/' then ERROR, return 0
-3. get fp going with complete path --> fp = open("/my/local/path/on/my/computer/" + "foo", "w+");
-4. LBAread(sourceBuffer, sourceFileIndex)
-5. foreach(body line) --> i = i + 16
-        LBAread(bodyBuffer, line) --> body bytes
-        fp.append(bodyBuffer)
-6. fp.close()
-7. return 1
-    
-
-*/
