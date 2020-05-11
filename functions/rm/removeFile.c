@@ -2,9 +2,13 @@
 
 int removeFile(struct filesystem_volume volume, struct arguments command) {
     // Checking argc 
-    if(command.argc != 3) {
-        printf("***Not Enough Args***\n");
+    if(command.argc < 3) {
+        printf("\t***Not Enough Args***\n");
         return 0; // check
+    }
+    else if(command.argc > 3){
+	printf("\t***TOO many Args***\n");
+	return 0; //check
     }
 
     // Get args 
@@ -13,20 +17,20 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
 
     //char* buffer = malloc(volume.blockSize);
 
-    printf("Deleting filename: %s in directory: %s\n", name, folder);
+    printf("\tDeleting filename: %s in directory: %s\n", name, folder);
 
     // Reinitialize LBA
     //printf("Reinitalizing the LBA back to default\n");
     //initializeLBA(buffer, '.', volume.blockSize);
 
     // Get index of folder 
-    printf("- Looking for parent folder\n");
+    // printf("- Looking for parent folder\n");
     int parentIndex = getIndex(folder, volume);
     if (parentIndex < 0) {
-        printf("***FOLDER DNE***\n");
+        printf("\t***FOLDER DNE***\n");
         return 0;
     } 
-    printf("- Parent directory folder index: %d\n", parentIndex);
+    // printf("- Parent directory folder index: %d\n", parentIndex);
 
     char* buffer = malloc(volume.blockSize);
     int foo = LBAread( buffer, 1, parentIndex);
@@ -61,7 +65,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             free(indexOfFile);
             free(indexOfBody);
 
-            printf("File removed!\n");
+            printf("\tFile removed!\n");
             return 1;
         }
     }
@@ -71,7 +75,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     free(indexOfFile);
     free(indexOfBody);
 
-    printf("***ERROR: file: \"%s\" is not in folder \"%s\"***\n", name, folder);
+    printf("\t***ERROR: file: \"%s\" is not in folder \"%s\"***\n", name, folder);
     return 0; 
 
     

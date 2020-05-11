@@ -4,11 +4,11 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
 
     //CHECK ARG COUNT
    if(command.argc > 5){
-       printf("***ERROR - TOO MANY ARGS***\n");
+       printf("\t***ERROR - TOO MANY ARGS***\n");
        return 0;
    }
    else if (command.argc < 5){
-       printf("***ERROR - TOO FEW ARGS***\n");
+       printf("\t***ERROR - TOO FEW ARGS***\n");
        return 0;
    }
 
@@ -20,19 +20,23 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
     char* data = command.args[4];
 
     if(strlen(type) > 16) {
-        printf("***ERROR - METADATA TYPE TOO LONG***\n");
+        printf("\t***ERROR - METADATA TYPE TOO LONG***\n");
         return 0;
     }
         if(strlen(data) > 16) {
-        printf("***ERROR - METADATA DATA TOO LONG***\n");
+        printf("\t***ERROR - METADATA DATA TOO LONG***\n");
         return 0;
     }
+    printf("\tThe File: %s\n", file);
+    printf("\tIn Folder: %s\n", folder);
+    printf("\tThe Type: %s\n", type);
+    printf("\tThe Data: %s\n", data);
 
 
     //GET FOLDER INDEX
     int folderIndex = getIndex(folder, volume);
     if(folderIndex < 0) {
-        printf("***ERROR - FOLDER NOT FOUND***\n");
+        printf("\t***ERROR - FOLDER NOT FOUND***\n");
         return 0;
     }
 
@@ -61,7 +65,7 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
         }
     }
     if(fileIndex < 0) {
-        printf("***ERROR - FILE NOT FOUND***\n");
+        printf("\t***ERROR - FILE NOT FOUND***\n");
         return 0;
     }
 
@@ -93,7 +97,7 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
             break;
         }
         else if(i == volume.blockSize - 32){ //check if metadata is full
-            printf("***METADATA BLOCK FULL***\n");
+            printf("\t***METADATA BLOCK FULL***\n");
             return 0;
         }
         else{ //clear misc char from buffer
