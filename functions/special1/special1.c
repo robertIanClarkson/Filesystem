@@ -102,7 +102,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     free(buffer);
 
-    printf("File successfully copied from LINUX to Filesystem\n");
+    //printf("File successfully copied from LINUX to Filesystem\n");
     return 1;
 }
 
