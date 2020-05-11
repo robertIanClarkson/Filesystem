@@ -6,14 +6,16 @@ Group Name: Orphaned Zombies
 Name: Stanley Brooks
 Student ID: 918764527
 Name: Cameron Harte
-Student ID:
+Student ID: 918245645
 Name: Robert Clarkson
 Student ID:
 Name: Michael Zheng
 Student ID:
 Project: <project name, like Assignment 3 – File System
 File: copyFile.c
-Description: This function takes 4 arguments, source file and folder, and a destination file and folder.  It copies the contents of the source file to the destination file, while keeping the original file intact.
+Description: This function takes 4 arguments, source file and folder, and a destination 
+file and folder.  It copies the contents of the source file to the destination file, while
+keeping the original file intact.
 **************************************************************/
 
 int copyFile(struct filesystem_volume volume, struct arguments command) {
