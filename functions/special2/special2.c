@@ -102,14 +102,14 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     free(metadataBuffer);
 
     int totalSize = atoi(totalBytes);
-    printf("totalSize: %d\n", totalSize);
+    //printf("totalSize: %d\n", totalSize);
     int totalLBA = (totalSize/volume.blockSize)+1;
-    printf("totalLBA: %d\n", totalLBA);
+    //printf("totalLBA: %d\n", totalLBA);
 
     LBAread(bodyBuffer, totalLBA, atoi(fileIndex)+2);
-    printf("bodyBuffer: %s\n", bodyBuffer); 
+    //printf("bodyBuffer: %s\n", bodyBuffer); 
     strncpy(bufferWithoutTrail,bodyBuffer,totalSize);
-    printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
+    //printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
     fputs(bufferWithoutTrail, fp);
     
     free(bodyBuffer);
