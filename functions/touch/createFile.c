@@ -14,31 +14,31 @@ File: createFile.c
 Description: This function takes 2 arguments the name you want to 
 name your file and the location of you want to put it.
 **************************************************************/
+
 #include "createFile.h"
 
 int createFile(struct filesystem_volume volume, struct arguments command) {
     // Checking argc 
+    /* check if command.argc != 3 */
     if(command.argc < 3) {
-        printf("\t***Not Enough Args***\n");
+        printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; // check
     }
-    else if(command.argc > 3){
-	printf("\t***TOO many Args***\n");
-	return 0; //check
+    else if(command.argc > 3) {
+	    printf("\t***ERROR - TOO MANY ARGS***\n");
+	    return 0; //check
     }
 
     // Get args 
     char* name = command.args[1];
     char* parent = command.args[2]; // the parent is the directory folder
-    printf("\tFile name: %s\n", name);
-    printf("\tTarget Directory: %s\n", parent);
 
-    printf("\tCreating filename: %s in directory: %s\n", name, parent);
+    printf("Creating file: %s in Directory: %s\n", name, parent);
 
     // Get parent LBA position
     int parentIndex = getIndex(parent, volume);
     if (parentIndex < 0) {
-        printf("\t***PARENT FOLDER DNE***\n");
+        printf("\t***ERROR - PARENT FOLDER DNE***\n");
         return 0;
     } 
     // Find the first LBA that is empty 

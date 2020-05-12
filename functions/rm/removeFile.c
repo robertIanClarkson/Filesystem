@@ -19,11 +19,11 @@ This function removes a file.
 int removeFile(struct filesystem_volume volume, struct arguments command) {
     // Checking argc 
     if(command.argc < 3) {
-        printf("\t***Not Enough Args***\n");
+        printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; // check
     }
     else if(command.argc > 3){
-	printf("\t***TOO many Args***\n");
+	printf("\t***ERROR - TOO MANY ARGS***\n");
 	return 0; //check
     }
 
@@ -31,14 +31,14 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     char* name = command.args[1];
     char* folder = command.args[2]; // the parent is the directory folder
 
-    printf("\tDeleting filename: %s in directory: %s\n", name, folder);
+    printf("\tDeleting File: %s in Directory: %s\n", name, folder);
 
     // Reinitialize LBA
 
     // Get index of folder 
     int parentIndex = getIndex(folder, volume);
     if (parentIndex < 0) {
-        printf("\t***FOLDER DNE***\n");
+        printf("\t***ERROR - FOLDER DNE***\n");
         return 0;
     } 
 

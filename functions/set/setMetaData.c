@@ -20,12 +20,12 @@ Description: This function takes 4 arguments the file name, folder name, the typ
 int setMetaData(struct filesystem_volume volume, struct arguments command) {
 
     //CHECK ARG COUNT
-   if(command.argc > 5){
-       printf("\t***ERROR - TOO MANY ARGS***\n");
+   if (command.argc < 5){
+       printf("\t***ERROR - TOO FEW ARGS***\n");
        return 0;
    }
-   else if (command.argc < 5){
-       printf("\t***ERROR - TOO FEW ARGS***\n");
+   else if(command.argc > 5){
+       printf("\t***ERROR - TOO MANY ARGS***\n");
        return 0;
    }
 
@@ -44,11 +44,7 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
         printf("\t***ERROR - METADATA DATA TOO LONG***\n");
         return 0;
     }
-    printf("\tThe File: %s\n", file);
-    printf("\tIn Folder: %s\n", folder);
-    printf("\tThe Type: %s\n", type);
-    printf("\tThe Data: %s\n", data);
-
+    printf("\tThe File: %s in Directory: %s has Type: %s of Data: %s\n", file, folder, type, data);
 
     //GET FOLDER INDEX
     int folderIndex = getIndex(folder, volume);
@@ -114,7 +110,7 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
             break;
         }
         else if(i == volume.blockSize - 32){ //check if metadata is full
-            printf("\t***METADATA BLOCK FULL***\n");
+            printf("\t***ERROR - METADATA BLOCK FULL***\n");
             return 0;
         }
         else{ //clear misc char from buffer

@@ -21,18 +21,17 @@ want to put it in.
 int createDir(struct filesystem_volume volume, struct arguments command) {
     /* Checking argc */
     if(command.argc < 3) {
-        printf("\t***Not Enough Args***\n");
+        printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; // check
     }
     else if(command.argc > 3){
-	printf("\t***TOO many Args***\n");
+	printf("\t***ERROR - TOO MANY ARGS***\n");
 	return 0; //check
     }
     /* Get args */
     char* name     = command.args[1];
     char* parent   = command.args[2];
-    printf("\tNew Folder: %s\n", name);
-    printf("\tIn Folder: %s\n", parent);
+    printf("\tCreating New Directory: %s in Directory: %s\n", name, parent);
 
     /* Find the first LBA that is empty */
     int i;
@@ -55,7 +54,7 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     /* Get parent LBA position */
     int parentIndex = getIndex(parent, volume);
     if(parentIndex < 0) {
-        printf("\t***PARENT FOLDER DNE***\n");
+        printf("\t***ERROR - PARENT FOLDER DNE***\n");
         return 0;
     }
      

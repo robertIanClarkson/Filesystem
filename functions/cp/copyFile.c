@@ -22,11 +22,11 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     
     /* Checking argc */
     if(command.argc < 5) {
-        printf("\t***Not Enough Args***\n");
+        printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; 
     }
     else if(command.argc > 5){
-	printf("\t***TOO many Args***\n");
+	printf("\t***ERROR - TOO MANY ARGS***\n");
 	return 0; 
     }
 
@@ -39,7 +39,7 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     /* Get index of 'keyFolder' */
     int oldFolderIndex = getIndex(oldFolder, volume);
     if(oldFolderIndex < 0) {
-        printf("\t***FOLDER DNE***\n");
+        printf("\t***ERROR - FOLDER DNE***\n");
         return 0;
     }
 
@@ -74,7 +74,7 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     strcpy(newArgs.args[1], newFile);
     strcpy(newArgs.args[2], newFolder);
     if(createFile(volume, newArgs) == 0) {
-        printf("\t***FAILED TO CREATE NEW FILE***\n");
+        printf("\t***ERROR - FAILED TO CREATE NEW FILE***\n");
         free(name);
         free(type);
         free(childBuffer);

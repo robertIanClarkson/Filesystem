@@ -19,11 +19,11 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
 
     /* check if command.argc != 2 */
     if(command.argc < 2) {
-        printf("\t***Not Enough Args***\n");
+        printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; // check
     }
     else if(command.argc > 2){
-	printf("\t***TOO many Args***\n");
+	printf("\t***ERROR - TOO MANY ARGS***\n");
 	return 0; //check
     }
     
@@ -51,7 +51,7 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
         memset(type,0,16);
         memset(name,0,16);
         if(getType(childBuffer, type) == 0) {
-            printf("***File has no type***\n");
+            printf("***ERROR - File has no type***\n");
             free(parentBuffer);
             free(childBuffer);
             free(line);
@@ -60,7 +60,7 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
             return 0;
         }
         if(getName(childBuffer, name) == 0) {
-            printf("\t***File has no name***\n");
+            printf("\t***ERROR - File has no name***\n");
             free(parentBuffer);
             free(childBuffer);
             free(line);

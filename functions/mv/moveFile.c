@@ -20,18 +20,18 @@ int moveFile(struct filesystem_volume volume, struct arguments command) {
     
     /* Checking argc */
     if(command.argc < 5) {
-        printf("\t***Not Enough Args***\n");
+        printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; // check
     }
     else if(command.argc > 5){
-	printf("\t***TOO many Args***\n");
+	printf("\t***ERROR - TOO MANY ARGS***\n");
 	return 0; //check
     }
 
     /* copy file */
     strcpy(command.args[0], "cp");
     if (copyFile(volume, command) == 0) {
-        printf("\t***Error Copying File***\n");
+        printf("\t***ERROR - COPYING FILE***\n");
         return 0;
     }     
 
@@ -39,7 +39,7 @@ int moveFile(struct filesystem_volume volume, struct arguments command) {
     strcpy(command.args[0], "rm");
     command.argc = 3;
     if (removeFile(volume, command) == 0) {
-        printf("\t***Error Removing File***\n");
+        printf("\t***ERROR - REMOVING FILE***\n");
         return 0;
     }
     return 1;
