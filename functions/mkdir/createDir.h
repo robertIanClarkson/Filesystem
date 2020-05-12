@@ -11,9 +11,8 @@ Name: Michael Zheng
 Student ID: 917581488
 Project: Assignment 3 – File System
 File: createDir.h
-Description: This function takes 4 arguments, source file and folder, and a destination 
-file and folder.  It copies the contents of the source file to the destination file, while
-keeping the original file intact.
+Description: This is the header for the createDir function. And these are the function
+declaration.
 **************************************************************/
 #ifndef createDir_h
 #define createDir_h
