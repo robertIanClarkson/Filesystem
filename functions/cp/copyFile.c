@@ -1,5 +1,3 @@
-#include "copyFile.h"
-
 /**************************************************************
 Class: CSC-415-03 Spring 2020
 Group Name: Orphaned Zombies
@@ -17,6 +15,8 @@ Description: This function takes 4 arguments, source file and folder, and a dest
 file and folder.  It copies the contents of the source file to the destination file, while
 keeping the original file intact.
 **************************************************************/
+
+#include "copyFile.h"
 
 int copyFile(struct filesystem_volume volume, struct arguments command) {
     
