@@ -44,7 +44,7 @@ int setMetaData(struct filesystem_volume volume, struct arguments command) {
         printf("\t***ERROR - METADATA DATA TOO LONG***\n");
         return 0;
     }
-    printf("\tThe File: %s in Directory: %s has Type: %s of Data: %s\n", file, folder, type, data);
+    printf("\tThe File in Directory: %s has Type: %s of Data: %s\n", folder, type, data);
 
     //GET FOLDER INDEX
     int folderIndex = getIndex(folder, volume);

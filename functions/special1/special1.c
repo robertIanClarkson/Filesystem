@@ -35,9 +35,9 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     char* sourceFile = command.args[1];
     char* ourFileName = command.args[2];
     char* ourFileDirectory = command.args[3];
-	
-    printf("\tLINUX File: %s of File: %s in Directory: %s\n", sourceFile, ourFileName, ourFileDirectory);
 
+    printf("\tLINUX File: %s of File: %s in Directory: %s\n", sourceFile, ourFileName, ourFileDirectory);
+    
     // how many blocks the file is 
     int totalSize;
     int totalBlocks;
@@ -47,7 +47,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
     // check if linux file exists
     if(stat(sourceFile, &st) != 0) {
-        printf("\t***ERROR LINUX FILE DNE***\n");
+        printf("\t***ERROR - LINUX FILE DNE***\n");
         return 0;
     }
 
@@ -58,12 +58,12 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     strcpy(newArgs.args[1], ourFileName);
     strcpy(newArgs.args[2], ourFileDirectory);
     if(createFile(volume, newArgs) == 0)
-        printf("\t***ERROR - FAILED TO CREATE NEW FILE***\n");
+        printf("***\tERROR - FAILED TO CREATE NEW FILE***\n");
 
     // get index of new file created
     int fileIndex = getIndex(ourFileName, volume);
     if(fileIndex < 0) {
-        printf("\t***ERROR - INDEX COULD NOT BE FOUND***");
+        printf("***\tERROR -  INDEX COULD NOT BE FOUND***");
         return 0;
     }
 
@@ -81,6 +81,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     for(int i = 0; i < LBAcount; i++) {
         // get a free block
         emptyBlock = getNextEmptyLBA(volume);
+        // volume.map[emptyBlock] = 1;
         setMap(emptyBlock, '1', volume);
 
         // read file into buffer
@@ -95,6 +96,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     // a new File is created using the set command, with the name, directory, and totalSize coming from args
     char totalSizeBuffer[linuxFileSize];
     sprintf(totalSizeBuffer, "%ld", linuxFileSize);
+
     struct arguments newArgs2;
     newArgs2.argc = 5;
     strcpy(newArgs2.args[0], "set");
@@ -103,8 +105,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     strcpy(newArgs2.args[3], "^Total Size");
     strcpy(newArgs2.args[4], totalSizeBuffer);
     if(setMetaData(volume, newArgs2) == 0)
-        printf("***ERROR - FAILED TO SET METADATA***\n");
-        return 0;
+        printf("\t***ERROR - FAILED TO SET METADATA***\n");
 
     free(buffer);
 
