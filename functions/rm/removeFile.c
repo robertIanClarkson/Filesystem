@@ -17,7 +17,7 @@ This function removes a file.
 #include "removeFile.h"
 
 int removeFile(struct filesystem_volume volume, struct arguments command) {
-    // Checking argc 
+    // Checking argc
     if(command.argc < 3) {
         printf("\t***ERROR - TOO FEW ARGS***\n");
         return 0; // check
@@ -27,20 +27,18 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
 	return 0; //check
     }
 
-    // Get args 
+    // Get args
     char* name = command.args[1];
     char* folder = command.args[2]; // the parent is the directory folder
 
     printf("\tDeleting File: %s in Directory: %s\n", name, folder);
 
-    // Reinitialize LBA
-
-    // Get index of folder 
+    // Get index of folder
     int parentIndex = getIndex(folder, volume);
     if (parentIndex < 0) {
         printf("\t***ERROR - FOLDER DNE***\n");
         return 0;
-    } 
+    }
 
     char* buffer = malloc(volume.blockSize);
     int foo = LBAread( buffer, 1, parentIndex);
@@ -52,8 +50,9 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     char* indexOfFile = malloc(16);
     char* indexOfBody = malloc(16);
     for(int i = 48; i < volume.blockSize; i = i + 16) { // each line of parent folder
+        memset(indexOfFile, 0, 16);
         if(getLine(buffer, indexOfFile, i) == 0) continue;
-        if(LBAis(volume, atoi(indexOfFile), name, "file") == 1) { // is the index of the file we want to delete    
+        if(LBAis(volume, atoi(indexOfFile), name, "file") == 1) { // is the index of the file we want to delete
             deleteLine(buffer, i, '-'); // delete line from parent folder
             LBAwrite(buffer, 1, parentIndex); // update LBA
             LBAread(buffer, 1, atoi(indexOfFile)); // read index of file we want to delete
@@ -66,7 +65,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             setMap(atoi(indexOfFile), '0', volume); // set file LBA to free
 
             LBAread(metaBuffer,1, (atoi(indexOfFile) + 1));
-            initializeLBA(metaBuffer, '.', volume.blockSize); 
+            initializeLBA(metaBuffer, '.', volume.blockSize);
             LBAwrite(metaBuffer,1,(atoi(indexOfFile) + 1));
             setMap((atoi(indexOfFile)+1), '0', volume);
 
@@ -74,18 +73,18 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             free(cleanBuffer);
             free(indexOfFile);
             free(indexOfBody);
-            
+
             return 1;
         }
     }
-    
+
     free(buffer);
     free(cleanBuffer);
     free(indexOfFile);
     free(indexOfBody);
 
     printf("\t***ERROR: file: \"%s\" is not in folder \"%s\"***\n", name, folder);
-    return 0; 
+    return 0;
 
-    
+
 }
