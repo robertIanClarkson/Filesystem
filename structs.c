@@ -10,10 +10,9 @@ Student ID: 915433914
 Name: Michael Zheng
 Student ID: 917581488
 Project: Assignment 3 – File System
-File: copyFile.c
-Description: This function takes 4 arguments, source file and folder, and a destination 
-file and folder.  It copies the contents of the source file to the destination file, while
-keeping the original file intact.
+File: structs.c
+Description: This functions is where we create all of the method 
+used to support the functions. 
 **************************************************************/
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -62,32 +61,7 @@ int getIndex(char* key, struct filesystem_volume volume) {
     free(name);
     return -1;
 }
-///////////////////////// Possible idea for deleting files //////////////////////////////
-// void deleteName(char* buffer) {
-//     for(int i=0; i<16;i++)
-//         buffer[i] = '.';
-// }
 
-// void deleteType(char* buffer) {
-//     for(int i=16; i < 16; i++)
-//         buffer[i] = '.';
-// }
-
-// void disconnectMetaData(char* buffer) {
-//     int lineStart = (16*2);
-//     for(int i = lineStart; i < (lineStart + 16); i++) {
-//         buffer[i] = str[i - lineStart];
-//     }
-// }
-
-/*
-    I say we just use 'initializeLBA(buffer, '.', volume.blocksize);'
-    - Robert
-*/
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-// 1
 int addName(char* name, char* buffer) {
     int len = strlen(name);
     if(len <= 16) {
@@ -100,7 +74,6 @@ int addName(char* name, char* buffer) {
     return 0;
 }
 
-// 2
 int addType(char* type, char* buffer) {
     int len = strlen(type);
     if(len <= 16) {
@@ -113,7 +86,6 @@ int addType(char* type, char* buffer) {
     return 0;
 }
 
-// 3
 int connectMetaData(int index, char* buffer) {
     /* convert index int to string */
     char* str = malloc(16);
@@ -136,7 +108,6 @@ int connectMetaData(int index, char* buffer) {
     return 1;
 }
 
-// 4
 int addChild(int child, int parent, struct filesystem_volume volume) {
     /* read parent LBA  into buffer so we can alter */
     char* buffer = malloc(volume.blockSize);
@@ -149,7 +120,6 @@ int addChild(int child, int parent, struct filesystem_volume volume) {
     for(i = lineStart; i < volume.blockSize; i = i + 16) {
         /* find an empty line to add child index */
         if(buffer[i] == '-') {
-            //printf("  - addChild at index: %d\n", i);
             break;
         }
     }
