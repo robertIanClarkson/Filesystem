@@ -11,7 +11,8 @@ Name: Michael Zheng
 Student ID: 917581488
 Project: Assignment 3 – File System
 File: copyFile.h
-Description: This is the head for the copyFile Function.
+Description: This is the header for the copyFile function. And these are the function
+declaration.
 **************************************************************/
 #ifndef copyFile_h
 #define copyFile_h
