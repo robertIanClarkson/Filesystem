@@ -11,9 +11,7 @@ Name: Michael Zheng
 Student ID: 917581488
 Project: Assignment 3 – File System
 File: listDir.c
-Description: This function takes 4 arguments, source file and folder, and a destination 
-file and folder.  It copies the contents of the source file to the destination file, while
-keeping the original file intact.
+Description: This function takes 1 argument source folder. It lists out the file and folder created. 
 **************************************************************/
 #include "listDir.h"
 
