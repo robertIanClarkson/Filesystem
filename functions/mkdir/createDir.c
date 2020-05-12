@@ -31,6 +31,7 @@ int createDir(struct filesystem_volume volume, struct arguments command) {
     /* Get args */
     char* name     = command.args[1];
     char* parent   = command.args[2];
+    
     printf("\tCreating New Directory: %s in Directory: %s\n", name, parent);
 
     /* Find the first LBA that is empty */

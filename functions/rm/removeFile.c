@@ -74,8 +74,7 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
             free(cleanBuffer);
             free(indexOfFile);
             free(indexOfBody);
-
-            printf("\tFile removed!\n");
+            
             return 1;
         }
     }

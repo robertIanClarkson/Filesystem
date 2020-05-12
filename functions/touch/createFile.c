@@ -33,7 +33,7 @@ int createFile(struct filesystem_volume volume, struct arguments command) {
     char* name = command.args[1];
     char* parent = command.args[2]; // the parent is the directory folder
 
-    printf("Creating file: %s in Directory: %s\n", name, parent);
+    printf("\tCreating File: %s in Directory: %s\n", name, parent);
 
     // Get parent LBA position
     int parentIndex = getIndex(parent, volume);

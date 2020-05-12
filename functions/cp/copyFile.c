@@ -36,6 +36,8 @@ int copyFile(struct filesystem_volume volume, struct arguments command) {
     char* newFile = command.args[3];
     char* newFolder = command.args[4];
 
+    printf("Copy File: %s from Directory: %s to File: %s in Directory: %s\n", oldFile, oldFolder, newFile, newFolder);
+
     /* Get index of 'keyFolder' */
     int oldFolderIndex = getIndex(oldFolder, volume);
     if(oldFolderIndex < 0) {
