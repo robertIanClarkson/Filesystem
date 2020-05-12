@@ -10,10 +10,9 @@ Student ID: 915433914
 Name: Michael Zheng
 Student ID: 917581488
 Project: Assignment 3 – File System
-File: copyFile.c
-Description: This function takes 4 arguments, source file and folder, and a destination 
-file and folder.  It copies the contents of the source file to the destination file, while
-keeping the original file intact.
+File: special2.c
+Description: This function takes 3 arguments, the source file and folder name, and the location and 
+name of where you want the file to be.
 **************************************************************/
 #include "special2.h"
 /* from your filesystem to the normal filesystem */
@@ -53,8 +52,6 @@ int special2(struct filesystem_volume volume, struct arguments command) {
         printf("***ERROR - FOLDER NOT FOUND***\n");
         return 0;
     }
-
-    //printf("file path: %s\n", linuxDestinationFile);
     //GET FILE INDEX
     char* folderBuffer = malloc(volume.blockSize);
     int temp = LBAread(folderBuffer, 1, folderIndex);
@@ -80,19 +77,15 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     }
 
     // get/check source file index, -1 doesnt exist
-    //int fileIndex = getIndex(sourceFile, volume);
     if(fileIndex < 0) {
         printf("***ERROR FILE DOES NOT EXIST***\n");
         return 0;
     }
 
-
     // open linux file
     FILE* fp = fopen(linuxDestinationFile, "w");
     if(fp == NULL) 
         printf("\t***ERROR FILE NOT FOUND***\n");
-
-    // printf("File successfully opened\n");
 
     // create buffers
     char* metadataBuffer = malloc(volume.blockSize);
@@ -119,14 +112,10 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     free(metadataBuffer);
 
     int totalSize = atoi(totalBytes);
-    //printf("totalSize: %d\n", totalSize);
     int totalLBA = (totalSize/volume.blockSize)+1;
-    //printf("totalLBA: %d\n", totalLBA);
 
     LBAread(bodyBuffer, totalLBA, atoi(fileIndex)+2);
-    //printf("bodyBuffer: %s\n", bodyBuffer); 
     strncpy(bufferWithoutTrail,bodyBuffer,totalSize);
-    //printf("bufferWithoutTrail: %s\n", bufferWithoutTrail);
     fputs(bufferWithoutTrail, fp);
     
     free(bodyBuffer);
@@ -135,7 +124,6 @@ int special2(struct filesystem_volume volume, struct arguments command) {
     free(totalBytes);
     fclose(fp);
 
-    // printf("File successfully copied from Filesystem to LINUX\n");
     return 1;
 }
 
