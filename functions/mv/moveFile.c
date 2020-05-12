@@ -42,7 +42,5 @@ int moveFile(struct filesystem_volume volume, struct arguments command) {
         printf("\t***Error Removing File***\n");
         return 0;
     }
-
-    //printf("***COMPLETE***\n\n");
     return 1;
 }
