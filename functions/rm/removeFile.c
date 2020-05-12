@@ -31,22 +31,16 @@ int removeFile(struct filesystem_volume volume, struct arguments command) {
     char* name = command.args[1];
     char* folder = command.args[2]; // the parent is the directory folder
 
-    //char* buffer = malloc(volume.blockSize);
-
     printf("\tDeleting filename: %s in directory: %s\n", name, folder);
 
     // Reinitialize LBA
-    //printf("Reinitalizing the LBA back to default\n");
-    //initializeLBA(buffer, '.', volume.blockSize);
 
     // Get index of folder 
-    // printf("- Looking for parent folder\n");
     int parentIndex = getIndex(folder, volume);
     if (parentIndex < 0) {
         printf("\t***FOLDER DNE***\n");
         return 0;
     } 
-    // printf("- Parent directory folder index: %d\n", parentIndex);
 
     char* buffer = malloc(volume.blockSize);
     int foo = LBAread( buffer, 1, parentIndex);
