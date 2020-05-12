@@ -83,7 +83,5 @@ int listDir(struct filesystem_volume volume, struct arguments command) {
     free(name);
     free(type);
 
-    // printf("***COMPLETE***\n\n"); 
-
     return 1;
 }
