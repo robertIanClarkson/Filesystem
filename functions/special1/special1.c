@@ -10,10 +10,10 @@ Student ID: 915433914
 Name: Michael Zheng
 Student ID: 917581488
 Project: Assignment 3 – File System
-File: copyFile.c
-Description: This function takes 4 arguments, source file and folder, and a destination 
-file and folder.  It copies the contents of the source file to the destination file, while
-keeping the original file intact.
+File: special1.c
+Description: This function takes 3 arguments source file name, the 
+file from linux name and the folder name you want it to be added to.
+The purpose of this function is to copy a file of any type in LINUX to our filesystem. 
 **************************************************************/
 #include "special1.h"
 /* one to copy from the normal filesystem to your filesystem */
@@ -70,15 +70,12 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     }
 
     // absolute path of file should work with null terminator added
-    //strcat(sourceFile, '\0');
 
     // get filesize of linux file
     long int linuxFileSize = getFileSize(sourceFile);
-    // printf("Linux FileSize: %ld\n", linuxFileSize);
 
     // get number of LBA we will need
     int LBAcount = ceil(((double) linuxFileSize) / ((double) volume.blockSize));
-    // printf("Number of LBAs we need: %d\n", LBAcount);
    
     // main logic loop 
     int emptyBlock;
@@ -88,9 +85,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
     for(int i = 0; i < LBAcount; i++) {
         // get a free block
         emptyBlock = getNextEmptyLBA(volume);
-        // volume.map[emptyBlock] = 1;
         setMap(emptyBlock, '1', volume);
-        // printf("Empty LBA at: %d\n", emptyBlock);
 
         // read file into buffer
         initializeLBA(buffer, '-', volume.blockSize);
@@ -99,7 +94,6 @@ int special1(struct filesystem_volume volume, struct arguments command) {
 
         // add block to file
         addChild(emptyBlock, fileIndex, volume);
-        // printf("Add Child at %d to file at %d\n", emptyBlock, fileIndex);
 
     }
 
@@ -118,9 +112,7 @@ int special1(struct filesystem_volume volume, struct arguments command) {
         printf("***FAILED TO SET METADATA***\n");
 
     free(buffer);
-
-    //printf("File successfully copied from LINUX to Filesystem\n");
+	
     return 1;
 }
 
-// test_files/test_small.txt
